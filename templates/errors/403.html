@@ -1,0 +1,35 @@
+```html
+{% extends 'base.html' %}
+
+{% block title %}
+    Akses Ditolak
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     ACCESS DENIED
+========================= -->
+<div class="empty-state">
+
+    <i class="bi bi-shield-lock"></i>
+
+    <h2>
+        Akses Ditolak
+    </h2>
+
+    <p>
+        Role Anda tidak memiliki izin untuk membuka halaman ini.
+    </p>
+
+    <a
+        class="btn btn-hino"
+        href="{% url 'dashboard' %}"
+    >
+        Kembali ke Dashboard
+    </a>
+
+</div>
+
+{% endblock %}
+```

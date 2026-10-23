@@ -1,0 +1,81 @@
+{% extends "server/layout.html" %}
+
+{% block title %}
+Activity Log - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<div class="eyebrow">
+    HMMI / AUDIT
+</div>
+
+<h1>
+    Activity Log
+</h1>
+
+<p class="page-description">
+    Riwayat aktivitas pengguna pada sistem.
+</p>
+
+
+<div class="content-card">
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>WAKTU</th>
+                    <th>USER</th>
+                    <th>AKSI</th>
+                    <th>OBJECT</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for log in logs %}
+
+                <tr>
+
+                    <td>
+                        {{ log.action_time }}
+                    </td>
+
+                    <td>
+                        {{ log.user.username }}
+                    </td>
+
+                    <td>
+                        {{ log.get_action_flag_display }}
+                    </td>
+
+                    <td>
+                        {{ log.object_repr }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="4">
+                        Belum ada activity log.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "server/layout.html" %}
+
+{% block title %}
+Storage - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<div class="eyebrow">
+    HMMI / STORAGE
+</div>
+
+<h1>
+    Storage Monitoring
+</h1>
+
+<p class="page-description">
+    Monitoring kapasitas penyimpanan media CHECKSHEET.
+</p>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            TOTAL STORAGE
+        </div>
+
+        <div class="stat-value">
+            {{ total_gb }} GB
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            USED
+        </div>
+
+        <div class="stat-value">
+            {{ used_gb }} GB
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            AVAILABLE
+        </div>
+
+        <div class="stat-value status-online">
+            {{ free_gb }} GB
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            USAGE
+        </div>
+
+        <div class="stat-value">
+            {{ usage_percent }}%
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content-card">
+
+    <h2>
+        Media Storage
+    </h2>
+
+    <p>
+        Lokasi penyimpanan:
+    </p>
+
+    <strong>
+        {{ media_path }}
+    </strong>
+
+</div>
+
+{% endblock %}

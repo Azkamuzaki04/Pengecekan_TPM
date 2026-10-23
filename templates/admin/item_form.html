@@ -1,0 +1,386 @@
+```html
+{% extends 'base.html' %}
+
+{% block title %}
+    Item Pemeriksaan - CHECKSHEET
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+<div class="page-heading">
+
+    <div>
+        <div class="eyebrow">
+            {{ barang.nama_barang }} / ITEM PEMERIKSAAN
+        </div>
+
+        <h1>
+            {% if parameter %}
+                Edit
+            {% else %}
+                Tambah
+            {% endif %}
+            Item Pemeriksaan
+        </h1>
+
+        <p>
+            Aturan di sini akan otomatis menjadi summary dan checksheet
+            di APK petugas.
+        </p>
+    </div>
+
+    <a href="{% url 'master_barang_detail' barang.id %}"
+       class="btn btn-light border">
+        Kembali
+    </a>
+
+</div>
+
+
+<!-- =========================
+     FORM
+========================= -->
+<form method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="row g-4">
+
+        <!-- =====================
+             FORM UTAMA
+        ====================== -->
+        <div class="col-xl-8">
+
+            <div class="panel-card">
+
+                <div class="row g-3">
+
+                    <!-- Urutan -->
+                    <div class="col-md-3">
+
+                        <label>
+                            Urutan *
+                        </label>
+
+                        <input
+                            class="form-control"
+                            type="number"
+                            min="1"
+                            name="urutan"
+                            value="{{ parameter.urutan|default:'1' }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Nama Pemeriksaan -->
+                    <div class="col-md-9">
+
+                        <label>
+                            Nama Pemeriksaan *
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="nama_parameter"
+                            value="{{ parameter.nama_parameter|default:'' }}"
+                            required
+                            
+                        >
+
+                    </div>
+
+
+                    <!-- Petunjuk Pemeriksaan -->
+                    <div class="col-12">
+
+                        <label>
+                            Petunjuk Pemeriksaan
+                        </label>
+
+                        <textarea
+                            class="form-control"
+                            name="instruksi"
+                            rows="3"
+                        >{{ parameter.instruksi|default:'' }}</textarea>
+
+                    </div>
+
+
+                    <!-- Standar / Kondisi OK -->
+                    <div class="col-12">
+
+                        <label>
+                            Standar
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="standar"
+                            value="{{ parameter.standar|default:'' }}"
+                        >
+
+                    </div>
+
+
+                    <!-- Metode Pemeriksaan -->
+                    <div class="col-md-5">
+
+                        <label>
+                            Metode Pemeriksaan
+                        </label>
+
+                        <select
+                            class="form-select"
+                            name="tipe_input"
+                            id="tipeInput"
+                        >
+
+                            <option
+                                value="okng"
+                                {% if parameter.tipe_input == 'okng' or not parameter %}
+                                    selected
+                                {% endif %}
+                            >
+                                OK / NG
+                            </option>
+
+                            <option
+                                value="number"
+                                {% if parameter.tipe_input == 'number' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Nilai Angka
+                            </option>
+
+                            <option
+                                value="text"
+                                {% if parameter.tipe_input == 'text' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Teks
+                            </option>
+
+                            <option
+                                value="select"
+                                {% if parameter.tipe_input == 'select' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Pilihan
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Satuan -->
+                    <div class="col-md-3">
+
+                        <label>
+                            Satuan
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="satuan"
+                            value="{{ parameter.satuan|default:'' }}"
+                        >
+
+                    </div>
+
+
+                    <!-- Batas Minimum -->
+                    <div class="col-md-6 numeric-field">
+
+                        <label>
+                            Batas Minimum
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="nilai_min"
+                            type="number"
+                            step="any"
+                            value="{{ parameter.nilai_min|default:'' }}"
+                        >
+
+                    </div>
+
+
+                    <!-- Batas Maksimum -->
+                    <div class="col-md-6 numeric-field">
+
+                        <label>
+                            Batas Maksimum
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="nilai_max"
+                            type="number"
+                            step="any"
+                            value="{{ parameter.nilai_max|default:'' }}"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             PENGATURAN
+        ====================== -->
+        <div class="col-xl-4">
+
+            <div class="panel-card">
+
+                <div class="form-section-title">
+                    Pengaturan
+                </div>
+
+
+                <!-- Pemeriksaan Wajib -->
+                <div class="form-check form-switch mb-4">
+
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="wajib"
+                        {% if not parameter or parameter.wajib %}
+                            checked
+                        {% endif %}
+                    >
+
+                    <label class="form-check-label">
+
+                        <b>
+                            Pemeriksaan wajib
+                        </b>
+
+                        <small class="d-block text-muted">
+                            Petugas harus mengisi item ini.
+                        </small>
+
+                    </label>
+
+                </div>
+
+
+                <!-- Gambar Referensi -->
+                <label>
+                    Gambar Referensi (opsional)
+                </label>
+
+
+                {% if parameter.foto_referensi %}
+
+                    <img
+                        class="preview-image mt-2"
+                        src="{{ parameter.foto_referensi.url }}"
+                    >
+
+                {% endif %}
+
+
+                <input
+                    class="form-control mt-2"
+                    type="file"
+                    name="foto_referensi"
+                    accept="image/*"
+                >
+
+
+                <!-- Tombol Simpan -->
+                <button
+                    type="submit"
+                    class="btn btn-hino w-100 mt-4"
+                >
+                    <i class="bi bi-save me-2"></i>
+                    Simpan Item Pemeriksaan
+                </button>
+
+            </div>
+
+
+            <!-- =====================
+                 INFO TIP
+            ====================== -->
+            <div class="info-tip mt-3">
+
+                <i class="bi bi-lightbulb"></i>
+
+                <div>
+
+                    <b>
+                        Contoh
+                    </b>
+
+                    <p>
+                        Untuk “Kondisi Hose”, gunakan metode OK / NG.
+                        Jika petugas memilih NG, sistem akan mewajibkan
+                        foto bukti NG.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+{% endblock %}
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+{% block extra_js %}
+
+<script>
+
+    const tipeInput = document.getElementById('tipeInput');
+    const numericFields = document.querySelectorAll('.numeric-field');
+
+
+    function syncNumericFields() {
+
+        numericFields.forEach(function (field) {
+
+            field.style.display =
+                tipeInput.value === 'number'
+                    ? 'block'
+                    : 'none';
+
+        });
+
+    }
+
+
+    tipeInput.addEventListener(
+        'change',
+        syncNumericFields
+    );
+
+
+    syncNumericFields();
+
+</script>
+
+{% endblock %}
+```

@@ -1,0 +1,122 @@
+{% extends "server/layout.html" %}
+
+{% block title %}
+Database - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<div class="eyebrow">
+    HMMI / DATABASE
+</div>
+
+<h1>
+    Database Monitoring
+</h1>
+
+<p class="page-description">
+    Monitoring koneksi dan data utama CHECKSHEET.
+</p>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            DATABASE
+        </div>
+
+        <div class="stat-value
+            {% if db_online %}
+                status-online
+            {% else %}
+                status-offline
+            {% endif %}
+        ">
+
+            {% if db_online %}
+                ONLINE
+            {% else %}
+                OFFLINE
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            BARANG
+        </div>
+
+        <div class="stat-value">
+            {{ barang_count }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            INSPEKSI
+        </div>
+
+        <div class="stat-value">
+            {{ inspection_count }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            USER
+        </div>
+
+        <div class="stat-value">
+            {{ user_count }}
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content-card">
+
+    <h2>
+        Database Connection
+    </h2>
+
+    <table>
+
+        <tr>
+            <td>Engine</td>
+            <td>{{ engine }}</td>
+        </tr>
+
+        <tr>
+            <td>Database</td>
+            <td>{{ name }}</td>
+        </tr>
+
+        <tr>
+            <td>Host</td>
+            <td>{{ host }}</td>
+        </tr>
+
+        <tr>
+            <td>Port</td>
+            <td>{{ port }}</td>
+        </tr>
+
+    </table>
+
+</div>
+
+{% endblock %}

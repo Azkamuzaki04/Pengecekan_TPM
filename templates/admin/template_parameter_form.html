@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% if template_parameter %}
+            Edit Item Pemeriksaan
+        {% else %}
+            Tambah Item Pemeriksaan
+        {% endif %}
+        - {{ jenis_label }}
+    </title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #1f2937;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .header p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            margin-bottom: 7px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .required {
+            color: #c8102e;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #c8102e;
+            box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.08);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .help {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-top: 5px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .checkbox-item input {
+            width: auto;
+        }
+
+        .current-image {
+            margin-top: 10px;
+        }
+
+        .current-image img {
+            width: 140px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .btn {
+            padding: 11px 20px;
+            border-radius: 9px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: #c8102e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #a80d25;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        .alert {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 13px 16px;
+            border-radius: 9px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 700px) {
+
+            .page {
+                padding: 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .actions {
+                flex-direction: column-reverse;
+            }
+
+            .actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="header">
+
+        <h1>
+
+            {% if template_parameter %}
+                Edit Item Pemeriksaan
+            {% else %}
+                Tambah Item Pemeriksaan
+            {% endif %}
+
+        </h1>
+
+        <p>
+            Template pemeriksaan untuk
+            <strong>{{ jenis_label }}</strong>
+        </p>
+
+    </div>
+
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <div class="card">
+
+        <form method="post"
+              enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+
+            <div class="form-grid">
+
+
+                <!-- URUTAN -->
+                <div class="form-group">
+
+                    <label for="urutan">
+                        Urutan <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="number"
+                        id="urutan"
+                        name="urutan"
+                        min="1"
+                        value="{% if template_parameter %}{{ template_parameter.urutan }}{% else %}1{% endif %}"
+                        required
+                    >
+
+                    <div class="help">
+                        Menentukan posisi item pemeriksaan.
+                    </div>
+
+                </div>
+
+
+                <!-- TIPE INPUT -->
+                <div class="form-group">
+
+                    <label for="tipe_input">
+                        Tipe Input <span class="required">*</span>
+                    </label>
+
+                    <select id="tipe_input"
+                            name="tipe_input"
+                            required>
+
+                        <option value="okng"
+                            {% if template_parameter and template_parameter.tipe_input == "okng" %}selected{% endif %}>
+                            OK / NG
+                        </option>
+
+                        <option value="number"
+                            {% if template_parameter and template_parameter.tipe_input == "number" %}selected{% endif %}>
+                            Nilai Angka
+                        </option>
+
+                        <option value="text"
+                            {% if template_parameter and template_parameter.tipe_input == "text" %}selected{% endif %}>
+                            Teks
+                        </option>
+
+                        <option value="select"
+                            {% if template_parameter and template_parameter.tipe_input == "select" %}selected{% endif %}>
+                            Pilihan
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- NAMA PARAMETER -->
+                <div class="form-group full">
+
+                    <label for="nama_parameter">
+                        Nama Pemeriksaan
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nama_parameter"
+                        name="nama_parameter"
+                        placeholder="Contoh: Kondisi wire rope"
+                        value="{% if template_parameter %}{{ template_parameter.nama_parameter }}{% endif %}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- INSTRUKSI -->
+                <div class="form-group full">
+
+                    <label for="instruksi">
+                        Instruksi Pemeriksaan
+                    </label>
+
+                    <textarea
+                        id="instruksi"
+                        name="instruksi"
+                        placeholder="Contoh: Periksa kondisi wire rope secara visual."
+                    >{% if template_parameter %}{{ template_parameter.instruksi }}{% endif %}</textarea>
+
+                </div>
+
+
+                <!-- STANDAR -->
+                <div class="form-group">
+
+                    <label for="standar">
+                        Standar / Kriteria
+                    </label>
+
+                    <input
+                        type="text"
+                        id="standar"
+                        name="standar"
+                        placeholder="Contoh: Tidak putus / tidak aus"
+                        value="{% if template_parameter %}{{ template_parameter.standar }}{% endif %}"
+                    >
+
+                </div>
+
+
+                <!-- SATUAN -->
+                <div class="form-group">
+
+                    <label for="satuan">
+                        Satuan
+                    </label>
+
+                    <input
+                        type="text"
+                        id="satuan"
+                        name="satuan"
+                        placeholder="Contoh: mm, bar, °C"
+                        value="{% if template_parameter %}{{ template_parameter.satuan }}{% endif %}"
+                    >
+
+                </div>
+
+
+                <!-- NILAI MIN -->
+                <div class="form-group">
+
+                    <label for="nilai_min">
+                        Nilai Minimum
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="nilai_min"
+                        name="nilai_min"
+                        value="{% if template_parameter and template_parameter.nilai_min is not None %}{{ template_parameter.nilai_min }}{% endif %}"
+                    >
+
+                </div>
+
+
+                <!-- NILAI MAX -->
+                <div class="form-group">
+
+                    <label for="nilai_max">
+                        Nilai Maximum
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="nilai_max"
+                        name="nilai_max"
+                        value="{% if template_parameter and template_parameter.nilai_max is not None %}{{ template_parameter.nilai_max }}{% endif %}"
+                    >
+
+                </div>
+
+
+                <!-- OPSI PILIHAN -->
+                <div class="form-group full">
+
+                    <label for="opsi_pilihan">
+                        Opsi Pilihan
+                    </label>
+
+                    <input
+                        type="text"
+                        id="opsi_pilihan"
+                        name="opsi_pilihan"
+                        placeholder="Contoh: Baik,Cukup,Rusak"
+                        value="{% if template_parameter %}{{ template_parameter.opsi_pilihan }}{% endif %}"
+                    >
+
+                    <div class="help">
+                        Digunakan jika tipe input adalah Pilihan.
+                        Pisahkan setiap pilihan dengan koma.
+                    </div>
+
+                </div>
+
+
+                <!-- FOTO REFERENSI -->
+                <div class="form-group full">
+
+                    <label for="foto_referensi">
+                        Foto Referensi
+                    </label>
+
+                    <input
+                        type="file"
+                        id="foto_referensi"
+                        name="foto_referensi"
+                        accept="image/*"
+                    >
+
+                    {% if template_parameter and template_parameter.foto_referensi %}
+
+                        <div class="current-image">
+
+                            <div class="help">
+                                Foto saat ini:
+                            </div>
+
+                            <img
+                                src="{{ template_parameter.foto_referensi.url }}"
+                                alt="Foto referensi"
+                            >
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- STATUS -->
+                <div class="form-group full">
+
+                    <div class="checkbox-group">
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="wajib"
+                                {% if not template_parameter or template_parameter.wajib %}checked{% endif %}
+                            >
+
+                            Item wajib diperiksa
+
+                        </label>
+
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="aktif"
+                                {% if not template_parameter or template_parameter.aktif %}checked{% endif %}
+                            >
+
+                            Template aktif
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTION -->
+            <div class="actions">
+
+                <a
+                    href="{% url 'template_parameter_list' jenis=jenis %}"
+                    class="btn btn-secondary"
+                >
+                    Batal
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    {% if template_parameter %}
+                        Simpan Perubahan
+                    {% else %}
+                        Simpan Item
+                    {% endif %}
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

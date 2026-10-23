@@ -1,0 +1,300 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Dashboard Petugas - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+<div class="hero-heading">
+
+    <div>
+
+        <div class="eyebrow">
+            WELDPART
+        </div>
+
+        <h1>
+            Selamat Datang,
+            {{ request.user.get_full_name|default:request.user.username }}
+            👋
+        </h1>
+
+        <p>
+            Scan barcode barang, baca summary pemeriksaan,
+            pilih OK/NG, dan kirim hasil untuk approval.
+        </p>
+
+    </div>
+
+    <a
+        href="{% url 'cari_barang' %}"
+        class="btn btn-hino btn-lg"
+    >
+        <i class="bi bi-upc-scan me-2"></i>
+        Scan Barcode
+    </a>
+
+</div>
+
+
+<!-- =========================
+     STATISTIK INSPEKSI
+========================= -->
+<div class="stats-grid">
+
+    <!-- TOTAL INSPEKSI -->
+    <div class="stat-card">
+
+        <small>
+            Total Inspeksi
+        </small>
+
+        <strong>
+            {{ inspection_count }}
+        </strong>
+
+        <em>
+            Yang sudah dibuat
+        </em>
+
+    </div>
+
+
+    <!-- APPROVED -->
+    <div class="stat-card">
+
+        <small>
+            Approved
+        </small>
+
+        <strong>
+            {{ approved_count }}
+        </strong>
+
+        <em>
+            Sudah disetujui
+        </em>
+
+    </div>
+
+
+    <!-- PENDING -->
+    <div class="stat-card">
+
+        <small>
+            Pending
+        </small>
+
+        <strong>
+            {{ pending_count }}
+        </strong>
+
+        <em>
+            Menunggu Admin
+        </em>
+
+    </div>
+
+
+    <!-- HASIL NG -->
+    <div class="stat-card">
+
+        <small>
+            Hasil NG
+        </small>
+
+        <strong>
+            {{ ng_count }}
+        </strong>
+
+        <em>
+            Perlu perhatian
+        </em>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CONTENT DASHBOARD
+========================= -->
+<div class="row g-4 mt-1">
+
+    <!-- =========================
+         MULAI PEMERIKSAAN
+    ========================= -->
+    <div class="col-lg-7">
+
+        <div class="panel-card">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <h3>
+                        Mulai Pemeriksaan
+                    </h3>
+
+                    <p>
+                        Alur singkat penggunaan CHECKSHEET.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- FLOW INSPEKSI -->
+            <div class="mobile-flow">
+
+                <!-- STEP 1 -->
+                <div>
+
+                    <span>
+                        1
+                    </span>
+
+                    <b>
+                        Scan
+                    </b>
+
+                    <small>
+                        Barcode barang
+                    </small>
+
+                </div>
+
+
+                <i class="bi bi-arrow-right"></i>
+
+
+                <!-- STEP 2 -->
+                <div>
+
+                    <span>
+                        2
+                    </span>
+
+                    <b>
+                        Cek
+                    </b>
+
+                    <small>
+                        OK / NG
+                    </small>
+
+                </div>
+
+
+                <i class="bi bi-arrow-right"></i>
+
+
+                <!-- STEP 3 -->
+                <div>
+
+                    <span>
+                        3
+                    </span>
+
+                    <b>
+                        Kirim
+                    </b>
+
+                    <small>
+                        Untuk approval
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTON MULAI -->
+            <a
+                href="{% url 'cari_barang' %}"
+                class="btn btn-hino w-100 mt-4"
+            >
+                Mulai Sekarang
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         INSPEKSI TERBARU
+    ========================= -->
+    <div class="col-lg-5">
+
+        <div class="panel-card">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <h3>
+                        Inspeksi Terbaru
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <!-- LIST INSPEKSI -->
+            {% for x in recent_reports %}
+
+                <a
+                    class="recent-row"
+                    href="{% url 'inspection_detail' x.id %}"
+                >
+
+                    <div>
+
+                        <b>
+                            {{ x.barang.nama_barang }}
+                        </b>
+
+                        <small>
+                            {{ x.tanggal_inspeksi|date:'d M Y H:i' }}
+                        </small>
+
+                    </div>
+
+
+                    <!-- STATUS HASIL -->
+                    <span
+                        class="badge-status
+                        {% if x.status_hasil == 'OK' %}
+                            success
+                        {% else %}
+                            danger
+                        {% endif %}"
+                    >
+                        {{ x.status_hasil }}
+                    </span>
+
+                </a>
+
+            {% empty %}
+
+                <!-- EMPTY STATE -->
+                <p class="text-muted">
+                    Belum ada inspeksi.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

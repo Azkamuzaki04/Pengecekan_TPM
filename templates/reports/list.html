@@ -1,0 +1,427 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Laporan - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+<div class="hero-heading">
+
+    <div>
+
+        <h1>
+            Laporan Inspeksi
+        </h1>
+
+        <p>
+            Gunakan filter untuk mencari histori,
+            lalu download hasilnya dalam Excel.
+        </p>
+
+    </div>
+
+    {% if request.user.is_staff %}
+
+        <a
+            href="{% url 'reports_excel' %}{% if request.GET.urlencode %}?{{ request.GET.urlencode }}{% endif %}"
+            class="btn btn-hino"
+        >
+            <i class="bi bi-file-earmark-excel me-2"></i>
+            Download Excel
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================
+     STATISTIK LAPORAN
+========================= -->
+<div class="stats-grid report-stats">
+
+    <!-- TOTAL -->
+    <div class="stat-card">
+
+        <small>
+            Total
+        </small>
+
+        <strong>
+            {{ total }}
+        </strong>
+
+        <em>
+            hasil filter
+        </em>
+
+    </div>
+
+
+    <!-- OK -->
+    <div class="stat-card">
+
+        <small>
+            OK
+        </small>
+
+        <strong>
+            {{ ok_count }}
+        </strong>
+
+        <em>
+            sesuai
+        </em>
+
+    </div>
+
+
+    <!-- NG -->
+    <div class="stat-card">
+
+        <small>
+            NG
+        </small>
+
+        <strong>
+            {{ ng_count }}
+        </strong>
+
+        <em>
+            perlu perhatian
+        </em>
+
+    </div>
+
+
+    <!-- PENDING -->
+    <div class="stat-card">
+
+        <small>
+            Pending
+        </small>
+
+        <strong>
+            {{ pending_count }}
+        </strong>
+
+        <em>
+            menunggu approval
+        </em>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     FILTER LAPORAN
+========================= -->
+<div class="panel-card mb-4">
+
+    <form class="report-filter">
+
+        <!-- PENCARIAN -->
+        <div>
+
+            <label>
+                Cari
+            </label>
+
+            <input
+                class="form-control"
+                name="q"
+                value="{{ request.GET.q }}"
+                placeholder="No. laporan / barang / barcode / petugas"
+            >
+
+        </div>
+
+
+        <!-- FILTER HASIL -->
+        <div>
+
+            <label>
+                Hasil
+            </label>
+
+            <select
+                class="form-select"
+                name="hasil"
+            >
+
+                <option value="">
+                    Semua
+                </option>
+
+                <option
+                    value="OK"
+                    {% if request.GET.hasil == 'OK' %}
+                        selected
+                    {% endif %}
+                >
+                    OK
+                </option>
+
+                <option
+                    value="NG"
+                    {% if request.GET.hasil == 'NG' %}
+                        selected
+                    {% endif %}
+                >
+                    NG
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- FILTER APPROVAL -->
+        <div>
+
+            <label>
+                Approval
+            </label>
+
+            <select
+                class="form-select"
+                name="approval"
+            >
+
+                <option value="">
+                    Semua
+                </option>
+
+                <option
+                    value="PENDING"
+                    {% if request.GET.approval == 'PENDING' %}
+                        selected
+                    {% endif %}
+                >
+                    Pending
+                </option>
+
+                <option
+                    value="APPROVED"
+                    {% if request.GET.approval == 'APPROVED' %}
+                        selected
+                    {% endif %}
+                >
+                    Approved
+                </option>
+
+                <option
+                    value="REJECTED"
+                    {% if request.GET.approval == 'REJECTED' %}
+                        selected
+                    {% endif %}
+                >
+                    Rejected
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- FILTER TANGGAL MULAI -->
+        <div>
+
+            <label>
+                Dari
+            </label>
+
+            <input
+                class="form-control"
+                type="date"
+                name="start"
+                value="{{ request.GET.start }}"
+            >
+
+        </div>
+
+
+        <!-- FILTER TANGGAL AKHIR -->
+        <div>
+
+            <label>
+                Sampai
+            </label>
+
+            <input
+                class="form-control"
+                type="date"
+                name="end"
+                value="{{ request.GET.end }}"
+            >
+
+        </div>
+
+
+        <!-- AKSI FILTER -->
+        <div class="filter-actions">
+
+            <button
+                type="submit"
+                class="btn btn-dark"
+            >
+                Filter
+            </button>
+
+            <a
+                href="{% url 'reports' %}"
+                class="btn btn-light border"
+            >
+                Reset
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- =========================
+     TABLE LAPORAN
+========================= -->
+<div class="panel-card">
+
+    <div class="table-responsive">
+
+        <table class="table modern-table align-middle">
+
+            <thead>
+
+                <tr>
+                    <th>No.</th>
+                    <th>Tanggal</th>
+                    <th>Barang</th>
+                    <th>Petugas</th>
+                    <th>Hasil</th>
+                    <th>Approval</th>
+                    <th></th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for x in laporan_list %}
+
+                <tr>
+
+                    <!-- NOMOR LAPORAN -->
+                    <td>
+
+                        <b>
+                            {{ x.nomor_laporan }}
+                        </b>
+
+                    </td>
+
+
+                    <!-- TANGGAL -->
+                    <td>
+                        {{ x.tanggal_inspeksi|date:'d M Y H:i' }}
+                    </td>
+
+
+                    <!-- BARANG -->
+                    <td>
+
+                        {{ x.barang.nama_barang }}
+
+                        <small class="d-block text-muted">
+                            {{ x.barang.kode_barang }}
+                        </small>
+
+                    </td>
+
+
+                    <!-- PETUGAS -->
+                    <td>
+                        {{ x.user.username }}
+                    </td>
+
+
+                    <!-- HASIL INSPEKSI -->
+                    <td>
+
+                        <span
+                            class="badge-status
+                            {% if x.status_hasil == 'OK' %}
+                                success
+                            {% else %}
+                                danger
+                            {% endif %}"
+                        >
+                            {{ x.status_hasil }}
+                        </span>
+
+                    </td>
+
+
+                    <!-- STATUS APPROVAL -->
+                    <td>
+
+                        <span
+                            class="badge-status
+                            {% if x.status_approval == 'APPROVED' %}
+                                success
+                            {% elif x.status_approval == 'REJECTED' %}
+                                danger
+                            {% else %}
+                                warning
+                            {% endif %}"
+                        >
+                            {{ x.get_status_approval_display }}
+                        </span>
+
+                    </td>
+
+
+                    <!-- AKSI -->
+                    <td>
+
+                        <a
+                            href="{% url 'inspection_detail' x.id %}"
+                            class="btn btn-sm btn-light border"
+                        >
+                            Detail
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <!-- EMPTY STATE -->
+                <tr>
+
+                    <td
+                        colspan="7"
+                        class="empty-inline"
+                    >
+                        Belum ada laporan sesuai filter.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "server/layout.html" %}
+
+{% block title %}
+User Monitoring - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<div class="eyebrow">
+    HMMI / USER MANAGEMENT
+</div>
+
+<h1>
+    Admin & Petugas
+</h1>
+
+<p class="page-description">
+    Monitoring seluruh pengguna sistem CHECKSHEET.
+</p>
+
+
+<div class="content-card">
+
+    <h2>
+        User List
+    </h2>
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>USERNAME</th>
+                    <th>NAMA</th>
+                    <th>ROLE</th>
+                    <th>LAST LOGIN</th>
+                    <th>STATUS</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for user in users %}
+
+                <tr>
+
+                    <td>
+                        <strong>
+                            {{ user.username }}
+                        </strong>
+                    </td>
+
+                    <td>
+                        {{ user.userprofile.nama|default:"-" }}
+                    </td>
+
+                    <td>
+                        {{ user.userprofile.role|default:"-" }}
+                    </td>
+
+                    <td>
+                        {{ user.last_login|default:"Belum login" }}
+                    </td>
+
+                    <td>
+
+                        {% if user.is_active %}
+
+                            <span class="badge badge-green">
+                                ACTIVE
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge badge-red">
+                                INACTIVE
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="5">
+                        Belum ada user.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

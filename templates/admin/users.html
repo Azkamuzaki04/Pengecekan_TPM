@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Kelola User - CHECKSHEET
+{% endblock %}
+
+{% block eyebrow %}
+    KELOLA USER
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+<div class="page-heading">
+
+    <div>
+
+        <div class="eyebrow">
+            MASTER DATA
+        </div>
+
+        <h1>
+            Kelola User
+        </h1>
+
+        <p>
+            Atur akun Petugas, Admin, dan Server.
+        </p>
+
+    </div>
+
+    <a
+        class="btn btn-hino"
+        href="{% url 'user_tambah' %}"
+    >
+        <i class="bi bi-person-plus me-2"></i>
+        Tambah User
+    </a>
+
+</div>
+
+
+<!-- =========================
+     TABLE USER
+========================= -->
+<div class="panel-card">
+
+    <div class="table-responsive">
+
+        <table class="table modern-table align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Username
+                    </th>
+
+                    <th>
+                        Nama
+                    </th>
+
+                    <th>
+                        Jabatan
+                    </th>
+
+                    <th>
+                        Role
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Aksi
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for u in users %}
+
+                <tr>
+
+                    <!-- Username -->
+                    <td>
+
+                        <b>
+                            {{ u.username }}
+                        </b>
+
+                    </td>
+
+
+                    <!-- Nama -->
+                    <td>
+                        {{ u.profile.nama|default:u.get_full_name|default:'-' }}
+                    </td>
+
+
+                    <!-- Jabatan -->
+                    <td>
+                        {{ u.profile.jabatan|default:'-' }}
+                    </td>
+
+
+                    <!-- Role -->
+                    <td>
+
+                        <span
+                            class="badge-status
+                            {% if u.profile.role == 'ADMIN' %}
+                                danger
+                            {% elif u.profile.role == 'SERVER' %}
+                                warning
+                            {% else %}
+                                success
+                            {% endif %}"
+                        >
+                            {{ u.profile.get_role_display|default:'Petugas / User' }}
+                        </span>
+
+                    </td>
+
+
+                    <!-- Status -->
+                    <td>
+
+                        {% if u.is_active %}
+
+                            <span class="badge-status success">
+                                Aktif
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge-status muted">
+                                Nonaktif
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- Aksi -->
+                    <td>
+
+                        <a
+                            href="{% url 'user_edit' u.id %}"
+                            class="btn btn-sm btn-light border"
+                        >
+                            Edit
+                        </a>
+
+                        <form
+                            method="post"
+                            action="{% url 'user_toggle' u.id %}"
+                            class="d-inline"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="btn btn-sm btn-outline-secondary"
+                            >
+                                {% if u.is_active %}
+                                    Nonaktifkan
+                                {% else %}
+                                    Aktifkan
+                                {% endif %}
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <!-- Empty State -->
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="empty-inline"
+                    >
+                        Belum ada user.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "server/layout.html" %}
+
+{% block title %}
+API Monitor - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<div class="eyebrow">
+    HMMI / API
+</div>
+
+<h1>
+    API & Endpoint Monitoring
+</h1>
+
+<p class="page-description">
+    Daftar endpoint yang digunakan aplikasi CHECKSHEET.
+</p>
+
+
+<div class="content-card">
+
+    <h2>
+        API Endpoints
+    </h2>
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>METHOD</th>
+                    <th>ENDPOINT</th>
+                    <th>FUNGSI</th>
+                    <th>STATUS</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for endpoint in endpoints %}
+
+                <tr>
+
+                    <td>
+                        <span class="badge badge-blue">
+                            {{ endpoint.method }}
+                        </span>
+                    </td>
+
+                    <td>
+                        {{ endpoint.path }}
+                    </td>
+
+                    <td>
+                        {{ endpoint.description }}
+                    </td>
+
+                    <td>
+                        <span class="badge badge-green">
+                            CONFIGURED
+                        </span>
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

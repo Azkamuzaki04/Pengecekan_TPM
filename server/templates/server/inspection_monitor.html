@@ -1,0 +1,152 @@
+{% extends "server/layout.html" %}
+
+{% block title %}
+Inspection Monitoring - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<div class="eyebrow">
+    HMMI / INSPECTION
+</div>
+
+<h1>
+    Live Inspection Monitoring
+</h1>
+
+<p class="page-description">
+    Monitoring keseluruhan aktivitas pemeriksaan.
+</p>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            TOTAL INSPEKSI
+        </div>
+
+        <div class="stat-value">
+            {{ total }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            HASIL OK
+        </div>
+
+        <div class="stat-value status-online">
+            {{ ok }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            HASIL NG
+        </div>
+
+        <div class="stat-value status-offline">
+            {{ ng }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            PENDING
+        </div>
+
+        <div class="stat-value">
+            {{ pending }}
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content-card">
+
+    <h2>
+        Latest Inspection
+    </h2>
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>NO. LAPORAN</th>
+                    <th>BARANG</th>
+                    <th>PETUGAS</th>
+                    <th>HASIL</th>
+                    <th>APPROVAL</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in latest %}
+
+                <tr>
+
+                    <td>
+                        {{ item.nomor_laporan }}
+                    </td>
+
+                    <td>
+                        {{ item.barang.nama_barang }}
+                    </td>
+
+                    <td>
+                        {{ item.user.username }}
+                    </td>
+
+                    <td>
+
+                        {% if item.status_hasil == "OK" %}
+
+                            <span class="badge badge-green">
+                                OK
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge badge-red">
+                                NG
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {{ item.status_approval }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

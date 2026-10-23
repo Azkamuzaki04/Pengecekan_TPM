@@ -1,0 +1,149 @@
+{% load static %}
+
+<aside class="server-sidebar">
+
+    <!-- =====================================================
+         BRAND
+    ====================================================== -->
+
+    <div class="server-brand">
+
+        <img
+            src="{% static 'img/logo-hino.jpg' %}"
+            alt="HINO"
+        >
+
+        <div>
+
+            <div class="brand-title">
+                CHECKSHEET
+            </div>
+
+            <div class="brand-subtitle">
+                Server Monitoring
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <div class="server-label">
+        MAIN
+    </div>
+
+    <nav class="server-menu">
+
+        <a href="{% url 'server_dashboard' %}">
+            <i class="bi bi-grid-1x2"></i>
+            Dashboard
+        </a>
+
+    </nav>
+
+
+    <!-- =====================================================
+         SYSTEM
+    ====================================================== -->
+
+    <div class="server-label">
+        SYSTEM
+    </div>
+
+    <nav class="server-menu">
+
+        <a href="{% url 'server_status' %}">
+            <i class="bi bi-hdd-rack"></i>
+            Server Status
+        </a>
+
+
+        <a href="{% url 'server_database' %}">
+            <i class="bi bi-database"></i>
+            Database
+        </a>
+
+
+        <a href="{% url 'server_api_monitor' %}">
+            <i class="bi bi-diagram-3"></i>
+            API & Endpoint
+        </a>
+
+
+        <a href="{% url 'server_storage' %}">
+            <i class="bi bi-device-hdd"></i>
+            Storage
+        </a>
+
+    </nav>
+
+
+    <!-- =====================================================
+         ACCESS & ACTIVITY
+    ====================================================== -->
+
+    <div class="server-label">
+        ACCESS & ACTIVITY
+    </div>
+
+    <nav class="server-menu">
+
+        <a href="{% url 'server_users' %}">
+            <i class="bi bi-people"></i>
+            User Access
+        </a>
+
+
+        <a href="{% url 'server_activity' %}">
+            <i class="bi bi-clock-history"></i>
+            Activity Log
+        </a>
+
+    </nav>
+
+
+    <!-- =====================================================
+         INSPECTION MONITORING
+    ====================================================== -->
+
+    <div class="server-label">
+        MONITORING
+    </div>
+
+    <nav class="server-menu">
+
+        <a href="{% url 'server_inspection_monitor' %}">
+            <i class="bi bi-activity"></i>
+            Live Monitoring
+        </a>
+
+
+        <a href="{% url 'server_reports' %}">
+            <i class="bi bi-bar-chart-line"></i>
+            System Reports
+        </a>
+
+    </nav>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <div class="server-footer">
+
+        <strong>
+            HMMI
+        </strong>
+
+        <span>
+            Hino Motors Manufacturing Indonesia
+        </span>
+
+    </div>
+
+</aside>

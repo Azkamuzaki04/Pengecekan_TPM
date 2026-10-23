@@ -1,0 +1,138 @@
+{% extends "server/layout.html" %}
+
+{% block title %}
+Approval Monitor - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<div class="eyebrow">
+    HMMI / APPROVAL
+</div>
+
+<h1>
+    Approval Monitoring
+</h1>
+
+<p class="page-description">
+    Monitoring status approval laporan inspeksi.
+</p>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            MENUNGGU APPROVAL
+        </div>
+
+        <div class="stat-value">
+            {{ pending }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            APPROVED
+        </div>
+
+        <div class="stat-value status-online">
+            {{ approved }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            REJECTED
+        </div>
+
+        <div class="stat-value status-offline">
+            {{ rejected }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            TOTAL
+        </div>
+
+        <div class="stat-value">
+            {{ pending|add:approved|add:rejected }}
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content-card">
+
+    <h2>
+        Approval Queue
+    </h2>
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>LAPORAN</th>
+                    <th>BARANG</th>
+                    <th>PETUGAS</th>
+                    <th>HASIL</th>
+                    <th>STATUS</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in latest %}
+
+                <tr>
+
+                    <td>
+                        {{ item.nomor_laporan }}
+                    </td>
+
+                    <td>
+                        {{ item.barang.nama_barang }}
+                    </td>
+
+                    <td>
+                        {{ item.user.username }}
+                    </td>
+
+                    <td>
+                        {{ item.status_hasil }}
+                    </td>
+
+                    <td>
+                        {{ item.status_approval }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

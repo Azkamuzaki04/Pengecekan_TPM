@@ -1,0 +1,218 @@
+```html
+{% extends 'base.html' %}
+
+{% block title %}
+    Approval - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+<div class="hero-heading">
+
+    <div>
+
+        <h1>
+            Approval Pemeriksaan
+        </h1>
+
+        <p>
+            Review hasil petugas sebelum laporan menjadi final.
+        </p>
+
+    </div>
+    
+</div>
+
+
+<!-- =========================
+     FILTER STATUS
+========================= -->
+<div class="filter-tabs">
+
+    <a
+        class="{% if status_filter == 'PENDING' %}active{% endif %}"
+        href="?status=PENDING"
+    >
+        Pending
+    </a>
+
+    <a
+        class="{% if status_filter == 'APPROVED' %}active{% endif %}"
+        href="?status=APPROVED"
+    >
+        Approved
+    </a>
+
+    <a
+        class="{% if status_filter == 'REJECTED' %}active{% endif %}"
+        href="?status=REJECTED"
+    >
+        Rejected
+    </a>
+
+    <a
+        class="{% if status_filter == 'ALL' %}active{% endif %}"
+        href="?status=ALL"
+    >
+        Semua
+    </a>
+
+</div>
+
+
+<!-- =========================
+     TABLE APPROVAL
+========================= -->
+<div class="panel-card">
+
+    <div class="table-responsive">
+
+        <table class="table modern-table align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        No. Laporan
+                    </th>
+
+                    <th>
+                        Tanggal
+                    </th>
+
+                    <th>
+                        Barang
+                    </th>
+
+                    <th>
+                        Petugas
+                    </th>
+
+                    <th>
+                        Hasil
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th class="text-end">
+                        Aksi
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for x in laporan_list %}
+
+                <tr>
+
+                    <!-- No. Laporan -->
+                    <td>
+                        <b>
+                            {{ x.nomor_laporan }}
+                        </b>
+                    </td>
+
+                    <!-- Tanggal -->
+                    <td>
+                        {{ x.tanggal_inspeksi|date:'d M Y H:i' }}
+                    </td>
+
+                    <!-- Barang -->
+                    <td>
+
+                        {{ x.barang.nama_barang }}
+
+                        <small class="d-block text-muted">
+                            {{ x.barang.barcode }}
+                        </small>
+
+                    </td>
+
+                    <!-- Petugas -->
+                    <td>
+                        {{ x.user.username }}
+                    </td>
+
+                    <!-- Hasil -->
+                    <td>
+
+                        <span
+                            class="badge-status
+                            {% if x.status_hasil == 'OK' %}
+                                success
+                            {% else %}
+                                danger
+                            {% endif %}"
+                        >
+                            {{ x.status_hasil }}
+                        </span>
+
+                    </td>
+
+                    <!-- Status Approval -->
+                    <td>
+
+                        <span
+                            class="badge-status
+                            {% if x.status_approval == 'APPROVED' %}
+                                success
+                            {% elif x.status_approval == 'REJECTED' %}
+                                danger
+                            {% else %}
+                                warning
+                            {% endif %}"
+                        >
+                            {{ x.get_status_approval_display }}
+                        </span>
+
+                    </td>
+
+                    <!-- Aksi -->
+                    <td class="text-end">
+
+                        <a
+                            href="{% url 'inspection_detail' x.id %}"
+                            class="btn btn-sm btn-dark"
+                        >
+                            Review
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <!-- Empty State -->
+                <tr>
+
+                    <td
+                        colspan="7"
+                        class="empty-inline"
+                    >
+                        Tidak ada data pada filter ini.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
+```

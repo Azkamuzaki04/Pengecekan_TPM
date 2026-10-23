@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    User - CHECKSHEET
+{% endblock %}
+
+{% block eyebrow %}
+    KELOLA USER
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+<div class="page-heading">
+
+    <div>
+
+        <div class="eyebrow">
+            MASTER DATA / USER
+        </div>
+
+        <h1>
+            {% if target %}
+                Edit User
+            {% else %}
+                Tambah User
+            {% endif %}
+        </h1>
+
+        <p>
+            Role menentukan menu dan akses pengguna.
+        </p>
+
+    </div>
+    
+    <a 
+        class="btn btn-light border"
+        href="/admin/auth/user/"
+    >
+        Kembali
+    </a>
+
+</div>
+
+
+<!-- =========================
+     FORM USER
+========================= -->
+<div class="panel-card form-card">
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            <!-- Username -->
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Username
+                </label>
+
+                <input
+                    class="form-control"
+                    name="username"
+                    value="{{ target.username|default:'' }}"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Password -->
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Password
+
+                    {% if target %}
+                        <small class="text-muted">
+                            (kosongkan jika tidak diubah)
+                        </small>
+                    {% endif %}
+
+                </label>
+
+                <input
+                    class="form-control"
+                    type="password"
+                    name="password"
+                    {% if not target %}
+                        required
+                    {% endif %}
+                >
+
+            </div>
+
+
+            <!-- Nama -->
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Nama
+                </label>
+
+                <input
+                    class="form-control"
+                    name="nama"
+                    value="{{ target.profile.nama|default:'' }}"
+                >
+
+            </div>
+
+
+            <!-- Jabatan -->
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Jabatan
+                </label>
+
+                <input
+                    class="form-control"
+                    name="jabatan"
+                    value="{{ target.profile.jabatan|default:'' }}"
+                >
+
+            </div>
+
+
+            <!-- Role -->
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Role
+                </label>
+
+                <select
+                    class="form-select"
+                    name="role"
+                >
+
+                    <option
+                        value="PETUGAS"
+                        {% if target.profile.role == "PETUGAS" or not target %}
+                            selected
+                        {% endif %}
+                    >
+                        Petugas / User
+                    </option>
+
+                    <option
+                        value="ADMIN"
+                        {% if target.profile.role == "ADMIN" %}
+                            selected
+                        {% endif %}
+                    >
+                        Admin
+                    </option>
+
+                    <option
+                        value="SERVER"
+                        {% if target.profile.role == "SERVER" %}
+                            selected
+                        {% endif %}
+                    >
+                        Server / Monitoring
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             FORM ACTIONS
+        ========================= -->
+        <div class="form-actions">
+            <a 
+                href="/admin/auth/user/"
+                class="btn btn-light border"
+            >
+                Batal
+            </a>
+
+            <button
+                type="submit"
+                class="btn btn-hino"
+            >
+                Simpan User
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

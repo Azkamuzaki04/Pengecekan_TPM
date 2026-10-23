@@ -1,0 +1,371 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Scan Barcode - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+<div class="hero-heading">
+
+    <div>
+
+        <div class="eyebrow">
+            INSPEKSI / IDENTIFIKASI
+        </div>
+
+        <h1>
+            Scan Barcode Barang
+        </h1>
+
+        <p>
+            Scan barcode untuk otomatis membuka summary barang dan item pemeriksaannya.
+        </p>
+
+    </div>
+
+    <a
+        href="{% url 'inspection_history' %}"
+        class="btn btn-light border"
+    >
+        Riwayat
+    </a>
+
+</div>
+
+
+<!-- =========================
+     SCANNER & INPUT MANUAL
+========================= -->
+<div class="row g-4">
+
+    <!-- Scanner Kamera -->
+    <div class="col-xl-7">
+
+        <div class="panel-card">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <h3>
+                        <i class="bi bi-camera me-2"></i>
+                        Scanner Kamera
+                    </h3>
+
+                    <p>
+                        Arahkan kamera ke barcode barang.
+                    </p>
+
+                </div>
+
+                <span class="badge-status success">
+                    READY
+                </span>
+
+            </div>
+
+
+            <!-- Scanner Box -->
+            <div
+                class="scanner-box"
+                id="scannerBox"
+            >
+
+                <video
+                    id="scannerVideo"
+                    playsinline
+                ></video>
+
+                <div class="scan-frame">
+                    <span></span>
+                </div>
+
+                <div
+                    class="scanner-placeholder"
+                    id="scannerPlaceholder"
+                >
+
+                    <i class="bi bi-camera-video"></i>
+
+                    <b>
+                        Scanner kamera
+                    </b>
+
+                    <small>
+                        Aktifkan kamera untuk membaca barcode
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- Scanner Actions -->
+            <div class="scanner-actions">
+
+                <button
+                    class="btn btn-hino"
+                    id="startScanner"
+                    type="button"
+                >
+                    <i class="bi bi-camera me-2"></i>
+                    Aktifkan Kamera
+                </button>
+
+                <button
+                    class="btn btn-light border"
+                    id="stopScanner"
+                    type="button"
+                    disabled
+                >
+                    Stop
+                </button>
+
+            </div>
+
+
+            <!-- Scanner Note -->
+            <div class="scanner-note">
+
+                <i class="bi bi-info-circle"></i>
+
+                Jika browser tidak mendukung BarcodeDetector,
+                gunakan input manual.
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Input Manual -->
+    <div class="col-xl-5">
+
+        <div class="panel-card h-100">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <h3>
+                        Input Manual
+                    </h3>
+
+                    <p>
+                        Alternatif jika scanner kamera tidak tersedia.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form method="get">
+
+                <label class="form-label fw-semibold">
+                    Barcode
+                </label>
+
+                <input
+                    class="form-control form-control-lg mb-3"
+                    name="barcode"
+                    value="{{ barcode }}"
+                    placeholder="8991234567890"
+                    required
+                >
+
+                <button
+                    class="btn btn-dark w-100"
+                    type="submit"
+                >
+                    Cari Barang
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     BARANG DITEMUKAN
+========================= -->
+{% if barang %}
+
+<div class="panel-card mt-4">
+
+    <div class="inspection-summary">
+
+        <!-- Gambar Barang -->
+        <div class="summary-image">
+
+            {% if barang.gambar %}
+
+                <img
+                    src="{{ barang.gambar.url }}"
+                    alt="{{ barang.nama_barang }}"
+                >
+
+            {% else %}
+
+                <div class="image-placeholder">
+
+                    <i class="bi bi-box-seam"></i>
+
+                    <span>
+                        Gambar barang menyusul
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Informasi Barang -->
+        <div class="flex-grow-1">
+
+            <span class="badge-status success">
+                BARANG DITEMUKAN
+            </span>
+
+            <h2>
+                {{ barang.nama_barang }}
+            </h2>
+
+            <p>
+                {{ barang.deskripsi|default:'Summary pemeriksaan akan digunakan sebagai panduan petugas.' }}
+            </p>
+
+
+            <div class="summary-meta">
+
+                <span>
+                    Kode
+                    <b>
+                        {{ barang.kode_barang }}
+                    </b>
+                </span>
+
+                <span>
+                    {{ barang.parameters.count }}
+                    item pemeriksaan
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Tombol Mulai Pemeriksaan -->
+        <a
+            href="{% url 'mulai_inspeksi' barang.id %}"
+            class="btn btn-hino align-self-center"
+        >
+            Mulai Pemeriksaan
+            <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+
+    </div>
+
+
+    <!-- =========================
+         DAFTAR ITEM PEMERIKSAAN
+    ========================= -->
+    <div class="summary-list mt-4">
+
+        <h4>
+            Yang harus diperiksa
+        </h4>
+
+        {% for p in barang.parameters.all %}
+
+        <div class="summary-item">
+
+            <span>
+                {{ p.urutan|stringformat:'02d' }}
+            </span>
+
+            <div>
+
+                <b>
+                    {{ p.nama_parameter }}
+                </b>
+
+                <p>
+                    {{ p.instruksi|default:'Ikuti standar pemeriksaan.' }}
+                </p>
+
+                <small>
+                    Standar:
+                    {{ p.standar|default:'-' }}
+                </small>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-inline">
+            Barang belum memiliki item pemeriksaan.
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     BARANG TIDAK DITEMUKAN
+========================= -->
+{% elif not_found %}
+
+<div class="empty-state mt-4">
+
+    <i class="bi bi-search"></i>
+
+    <h3>
+        Barang tidak ditemukan
+    </h3>
+
+    <p>
+        Barcode
+        <b>{{ barcode }}</b>
+        belum terdaftar atau barang tidak aktif.
+    </p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+
+<!-- =========================
+     EXTRA JAVASCRIPT
+========================= -->
+{% block extra_js %}
+
+<script src="{% static 'js/zxing-browser.min.js' %}"></script>
+
+<script>
+    console.log("ZXingBrowser =", typeof ZXingBrowser);
+</script>
+
+<script src="{% static 'js/scanner.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,557 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Server Monitoring - CHECKSHEET
+{% endblock %}
+
+{% block eyebrow %}
+    SERVER MONITORING
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================================================
+     PAGE HEADER
+========================================================= -->
+
+<div class="hero-heading">
+
+    <div>
+
+        <div class="eyebrow">
+            HMMI
+        </div>
+
+        <h1>
+            Server Monitoring
+        </h1>
+
+        <p>
+            Memantau sistem, database, storage,
+            dan aktivitas CHECKSHEET.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     SERVER STATISTICS
+========================================================= -->
+
+<div class="stats-grid">
+
+    <!-- SERVER -->
+
+    <div class="stat-card">
+
+        <span class="stat-icon">
+            <i class="bi bi-hdd-rack"></i>
+        </span>
+
+        <small>
+            Server
+        </small>
+
+        <strong class="text-success">
+            ONLINE
+        </strong>
+
+        <em>
+            Application server aktif
+        </em>
+
+    </div>
+
+
+    <!-- DATABASE -->
+
+    <div class="stat-card">
+
+        <span class="stat-icon">
+            <i class="bi bi-database-check"></i>
+        </span>
+
+        <small>
+            Database
+        </small>
+
+        <strong
+            class="{% if db_status == 'ONLINE' %}text-success{% else %}text-danger{% endif %}"
+        >
+            {{ db_status }}
+        </strong>
+
+        <em>
+            Koneksi database
+        </em>
+
+    </div>
+
+
+    <!-- STORAGE -->
+
+    <div class="stat-card">
+
+        <span class="stat-icon">
+            <i class="bi bi-device-hdd"></i>
+        </span>
+
+        <small>
+            Storage
+        </small>
+
+        <strong>
+
+            {% if media_ok %}
+
+                <span class="text-success">
+                    READY
+                </span>
+
+            {% else %}
+
+                <span class="text-danger">
+                    CHECK
+                </span>
+
+            {% endif %}
+
+        </strong>
+
+        <em>
+            Media & penyimpanan file
+        </em>
+
+    </div>
+
+
+    <!-- INSPECTION -->
+
+    <div class="stat-card">
+
+        <span class="stat-icon">
+            <i class="bi bi-clipboard-data"></i>
+        </span>
+
+        <small>
+            Total Inspeksi
+        </small>
+
+        <strong>
+            {{ inspection_count }}
+        </strong>
+
+        <em>
+            Data inspeksi tersimpan
+        </em>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     SECONDARY INFORMATION
+========================================================= -->
+
+<div class="row g-4 mt-1">
+
+    <!-- USER & SYSTEM -->
+
+    <div class="col-xl-4">
+
+        <div class="panel-card">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <h3>
+                        System Overview
+                    </h3>
+
+                    <p>
+                        Informasi pengguna sistem.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="health-row">
+
+                <span>
+                    Admin
+                </span>
+
+                <b>
+                    {{ admin_count }}
+                </b>
+
+            </div>
+
+
+            <div class="health-row">
+
+                <span>
+                    Petugas
+                </span>
+
+                <b>
+                    {{ petugas_count }}
+                </b>
+
+            </div>
+
+
+            <div class="health-row">
+
+                <span>
+                    Total Barang
+                </span>
+
+                <b>
+                    {{ barang_count }}
+                </b>
+
+            </div>
+
+
+            <div class="health-row">
+
+                <span>
+                    Total Inspeksi
+                </span>
+
+                <b>
+                    {{ inspection_count }}
+                </b>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SYSTEM HEALTH -->
+
+    <div class="col-xl-4">
+
+        <div class="panel-card">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <h3>
+                        System Health
+                    </h3>
+
+                    <p>
+                        Status komponen utama aplikasi.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="health-row">
+
+                <span>
+                    Application
+                </span>
+
+                <b class="text-success">
+                    ONLINE
+                </b>
+
+            </div>
+
+
+            <div class="health-row">
+
+                <span>
+                    Database
+                </span>
+
+                <b
+                    class="{% if db_status == 'ONLINE' %}text-success{% else %}text-danger{% endif %}"
+                >
+                    {{ db_status }}
+                </b>
+
+            </div>
+
+
+            <div class="health-row">
+
+                <span>
+                    Media Storage
+                </span>
+
+                <b>
+
+                    {% if media_ok %}
+
+                        <span class="text-success">
+                            READY
+                        </span>
+
+                    {% else %}
+
+                        <span class="text-danger">
+                            CHECK
+                        </span>
+
+                    {% endif %}
+
+                </b>
+
+            </div>
+
+
+            <div class="health-row">
+
+                <span>
+                    API Service
+                </span>
+
+                <b class="text-success">
+                    ONLINE
+                </b>
+
+            </div>
+
+
+            <a
+                href="{% url 'server_health' %}"
+                class="btn btn-outline-secondary w-100 mt-3"
+            >
+                <i class="bi bi-heart-pulse me-1"></i>
+                Tes Health API
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- SERVER INFORMATION -->
+
+    <div class="col-xl-4">
+
+        <div class="panel-card">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <h3>
+                        Server Information
+                    </h3>
+
+                    <p>
+                        Akses cepat monitoring server.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="server-info-box">
+
+                <div class="server-info-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+
+                <div>
+
+                    <strong>
+                        Server Active
+                    </strong>
+
+                    <span>
+                        CHECKSHEET monitoring system
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="{% url 'server_status' %}"
+                class="btn btn-light border w-100 mt-3"
+            >
+                <i class="bi bi-hdd-rack me-1"></i>
+                Lihat Server Status
+            </a>
+
+
+            <a
+                href="{% url 'server_api_monitor' %}"
+                class="btn btn-light border w-100 mt-2"
+            >
+                <i class="bi bi-diagram-3 me-1"></i>
+                Monitor API
+            </a>
+
+
+            <a
+                href="{% url 'server_storage' %}"
+                class="btn btn-light border w-100 mt-2"
+            >
+                <i class="bi bi-device-hdd me-1"></i>
+                Cek Storage
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     RECENT SYSTEM ACTIVITY
+========================================================= -->
+
+<div class="row g-4 mt-1">
+
+    <div class="col-12">
+
+        <div class="panel-card">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <h3>
+                        Recent Inspection Activity
+                    </h3>
+
+                    <p>
+                        Aktivitas inspeksi terbaru pada sistem.
+                    </p>
+
+                </div>
+
+                <a
+                    href="{% url 'server_inspection_monitor' %}"
+                    class="btn btn-sm btn-light border"
+                >
+                    Live Monitoring
+                </a>
+
+            </div>
+
+
+            <div class="table-responsive">
+
+                <table class="table modern-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Laporan
+                            </th>
+
+                            <th>
+                                Barang
+                            </th>
+
+                            <th>
+                                Petugas
+                            </th>
+
+                            <th>
+                                Hasil
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for x in latest %}
+
+                        <tr>
+
+                            <td>
+                                <b>
+                                    {{ x.nomor_laporan }}
+                                </b>
+                            </td>
+
+
+                            <td>
+                                {{ x.barang.nama_barang }}
+                            </td>
+
+
+                            <td>
+                                {{ x.user.username }}
+                            </td>
+
+
+                            <td>
+
+                                {% if x.status_hasil == "OK" %}
+
+                                    <span class="text-success">
+                                        <i class="bi bi-check-circle"></i>
+                                        OK
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="text-danger">
+                                        <i class="bi bi-x-circle"></i>
+                                        NG
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="4"
+                                class="empty-inline"
+                            >
+                                Belum ada aktivitas inspeksi.
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

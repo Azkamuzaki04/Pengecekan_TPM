@@ -1,0 +1,915 @@
+```html
+{% extends 'base.html' %}
+
+{% load checksit_tags %}
+
+{% block title %}
+    Pemeriksaan - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+<div class="page-heading">
+
+    <div>
+
+        <div class="eyebrow">
+            INSPEKSI / CHECKSHEET
+        </div>
+
+        <h1>
+            {{ barang.nama_barang }}
+        </h1>
+
+        <p>
+            {{ barang.kode_barang }}
+            ·
+            Barcode {{ barang.barcode }}
+        </p>
+
+    </div>
+
+    <a
+        href="{% url 'cari_barang' %}"
+        class="btn btn-light border"
+    >
+        Kembali
+    </a>
+
+</div>
+
+
+<!-- =========================
+     SUMMARY BARANG
+========================= -->
+<div class="panel-card mb-4 summary-sheet">
+
+    <!-- Summary Header -->
+    <div class="summary-sheet-head">
+
+        <div>
+
+            <span class="badge-status success">
+                BARANG DITEMUKAN
+            </span>
+
+            <h2>
+                {{ barang.nama_barang }}
+            </h2>
+
+            <p>
+                {{ barang.deskripsi|default:"Summary pemeriksaan sesuai checksheet barang." }}
+            </p>
+
+            <div class="summary-meta">
+
+                <span>
+                    <b>Kode</b>
+                    {{ barang.kode_barang }}
+                </span>
+
+                <span>
+                    <b>Barcode</b>
+                    {{ barang.barcode }}
+                </span>
+
+                <span>
+                    <b>{{ parameters|length }}</b>
+                    item inspection
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         GAMBAR & SUMMARY CHECKSHEET
+    ========================= -->
+    <div class="row g-4 align-items-start">
+
+        <!-- Gambar Barang -->
+        <div class="col-lg-5">
+
+            <div class="summary-image large">
+
+                {% if barang.gambar %}
+
+                    <img
+                        src="{{ barang.gambar.url }}"
+                        alt="{{ barang.nama_barang }}"
+                    >
+
+                {% else %}
+
+                    <div class="image-placeholder">
+
+                        <i class="bi bi-image"></i>
+
+                        <span>
+                            Gambar barang akan di-upload Admin
+                        </span>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Daftar Item Inspection -->
+        <div class="col-lg-7">
+
+            <div class="table-responsive">
+
+                <table class="table summary-table align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                No.
+                            </th>
+
+                            <th>
+                                Item Inspection
+                            </th>
+
+                            <th>
+                                Inspection Content
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for p in parameters %}
+
+                        <tr>
+
+                            <!-- Nomor -->
+                            <td>
+
+                                <span class="summary-number">
+                                    {{ p.urutan|stringformat:"02d" }}
+                                </span>
+
+                            </td>
+
+                            <!-- Nama Parameter -->
+                            <td>
+
+                                <b>
+                                    {{ p.nama_parameter }}
+                                </b>
+
+                            </td>
+
+                            <!-- Isi Pemeriksaan -->
+                            <td>
+
+                                {{ p.instruksi|default:"Lakukan pemeriksaan sesuai kondisi aktual." }}
+
+                                {% if p.standar %}
+
+                                    <div class="text-muted mt-1">
+
+                                        <b>
+                                            Standar:
+                                        </b>
+
+                                        {{ p.standar }}
+
+                                    </div>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     FORM INSPEKSI
+========================= -->
+<form
+    method="post"
+    enctype="multipart/form-data"
+    id="inspectionForm"
+>
+
+    {% csrf_token %}
+
+    <div class="row g-4">
+
+        <!-- =========================
+             CHECKLIST PEMERIKSAAN
+        ========================= -->
+        <div class="col-xl-8">
+
+            <!-- Section Header -->
+            <div class="section-title">
+
+                <div>
+
+                    <div class="eyebrow">
+                        PEMERIKSAAN
+                    </div>
+
+                    <h3>
+                        Checklist Kondisi Barang
+                    </h3>
+
+                    <p>
+                        Pilih OK jika sesuai standar.
+                        Jika NG, foto bukti wajib diambil.
+                    </p>
+
+                </div>
+
+                <span
+                    class="progress-label"
+                    id="progressText"
+                >
+                    0 / {{ parameters|length }} selesai
+                </span>
+
+            </div>
+
+
+            <!-- =========================
+                 ITEM PEMERIKSAAN
+            ========================= -->
+            {% for p in parameters %}
+
+            <div
+                class="check-card"
+                data-check-card
+            >
+
+                <!-- Nomor Item -->
+                <div class="check-no">
+                    {{ p.urutan|stringformat:'02d' }}
+                </div>
+
+
+                <div class="check-body">
+
+                    <!-- Header Item -->
+                    <div class="check-head">
+
+                        <div>
+
+                            <h4>
+                                {{ p.nama_parameter }}
+                            </h4>
+
+                            {% if p.wajib %}
+
+                                <span class="badge-status warning">
+                                    Wajib
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge-status muted">
+                                    Opsional
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Foto Referensi -->
+                    {% if p.foto_referensi %}
+
+                        <img
+                            class="reference-img"
+                            src="{{ p.foto_referensi.url }}"
+                            alt="Referensi {{ p.nama_parameter }}"
+                        >
+
+                    {% endif %}
+
+
+                    <!-- Instruksi -->
+                    <p class="instruction">
+                        {{ p.instruksi|default:'Lakukan pemeriksaan sesuai standar.' }}
+                    </p>
+
+
+                    <!-- =========================
+                         STANDAR PEMERIKSAAN
+                    ========================= -->
+                    <div class="standard-box">
+
+                        <b>
+                            Standar:
+                        </b>
+
+                        {{ p.standar|default:'Sesuai kondisi normal / tidak ada kerusakan.' }}
+
+                        {% if p.tipe_input == 'number' and p.nilai_min is not None or p.nilai_max is not None %}
+
+                            <span class="ms-2">
+
+                                (
+                                {{ p.nilai_min|default:'-' }}
+                                —
+                                {{ p.nilai_max|default:'-' }}
+
+                                {{ p.satuan|default:'' }}
+                                )
+
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- =========================
+                         INPUT HASIL
+                    ========================= -->
+
+                    {% if p.tipe_input == 'okng' %}
+
+                    <!-- Input OK / NG -->
+                    <div class="okng-group">
+
+                        <input
+                            type="radio"
+                            id="ok{{p.id}}"
+                            name="parameter_{{p.id}}"
+                            value="OK"
+                            data-result="ok"
+                            data-required="{{p.wajib|yesno:'1,0'}}"
+                        >
+
+                        <label
+                            for="ok{{p.id}}"
+                            class="ok-choice"
+                        >
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            <b>
+                                OK
+                            </b>
+
+                            <small>
+                                Sesuai standar
+                            </small>
+
+                        </label>
+
+
+                        <input
+                            type="radio"
+                            id="ng{{p.id}}"
+                            name="parameter_{{p.id}}"
+                            value="NG"
+                            data-result="ng"
+                            data-required="{{p.wajib|yesno:'1,0'}}"
+                        >
+
+                        <label
+                            for="ng{{p.id}}"
+                            class="ng-choice"
+                        >
+                            <i class="bi bi-x-circle-fill"></i>
+
+                            <b>
+                                NG
+                            </b>
+
+                            <small>
+                                Tidak sesuai
+                            </small>
+
+                        </label>
+
+                    </div>
+
+
+                    {% elif p.tipe_input == 'number' %}
+
+                    <!-- Input Angka -->
+                    <div class="input-group">
+
+                        <input
+                            class="form-control form-control-lg value-input"
+                            name="parameter_{{p.id}}"
+                            data-result-input
+                            data-min="{{p.nilai_min|default:''}}"
+                            data-max="{{p.nilai_max|default:''}}"
+                            data-required="{{p.wajib|yesno:'1,0'}}"
+                            type="number"
+                            step="any"
+                        >
+
+                        <span class="input-group-text">
+                            {{p.satuan|default:'-'}}
+                        </span>
+
+                    </div>
+
+
+                    {% elif p.tipe_input == 'select' %}
+
+                    <!-- Input Pilihan -->
+                    <select
+                        class="form-select form-select-lg value-input"
+                        name="parameter_{{p.id}}"
+                        data-result-input
+                        data-required="{{p.wajib|yesno:'1,0'}}"
+                    >
+
+                        <option value="">
+                            Pilih hasil...
+                        </option>
+
+                        {% for option in p.opsi_pilihan|default:''|split:',' %}
+
+                            <option>
+                                {{ option }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+                    {% else %}
+
+                    <!-- Input Text -->
+                    <input
+                        class="form-control form-control-lg value-input"
+                        name="parameter_{{p.id}}"
+                        data-result-input
+                        data-required="{{p.wajib|yesno:'1,0'}}"
+                        placeholder="Masukkan hasil..."
+                    >
+
+                    {% endif %}
+
+
+                    <!-- =========================
+                         FOTO BUKTI NG
+                    ========================= -->
+                    <div
+                        class="ng-panel"
+                        data-ng-panel
+                    >
+
+                        <label>
+                            Foto bukti NG
+                            <b>*</b>
+                        </label>
+
+                        <input
+                            class="form-control"
+                            type="file"
+                            name="foto_ng_{{p.id}}"
+                            accept="image/*"
+                            capture="environment"
+                            data-ng-photo
+                        >
+
+                        <small>
+                            Wajib untuk hasil NG.
+                        </small>
+
+                    </div>
+
+
+                    <!-- Catatan Item -->
+                    <input
+                        class="form-control mt-2"
+                        name="catatan_{{p.id}}"
+                        placeholder="Catatan item (opsional)"
+                    >
+
+
+                    <!-- Status Item -->
+                    <div
+                        class="item-result"
+                        data-item-result
+                    >
+                        Belum diperiksa
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+
+            <!-- =========================
+                 CATATAN UMUM
+            ========================= -->
+            <div class="panel-card mt-4">
+
+                <label class="form-label fw-bold">
+                    Catatan Umum
+                </label>
+
+                <textarea
+                    class="form-control"
+                    name="catatan"
+                    rows="4"
+                    placeholder="Tambahkan catatan jika diperlukan..."
+                ></textarea>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             SIDEBAR STATUS INSPEKSI
+        ========================= -->
+        <div class="col-xl-4">
+
+            <div
+                class="panel-card sticky-xl-top"
+                style="top:92px"
+            >
+
+                <!-- Status Akhir -->
+                <div class="summary-side">
+
+                    <span>
+                        Status Akhir
+                    </span>
+
+                    <strong id="overallStatus">
+                        Belum diperiksa
+                    </strong>
+
+                    <small id="overallHint">
+                        Selesaikan seluruh item pemeriksaan.
+                    </small>
+
+                </div>
+
+
+                <!-- Legend -->
+                <div class="mini-legend">
+
+                    <span>
+                        <i class="dot ok"></i>
+                        OK
+                    </span>
+
+                    <span>
+                        <i class="dot ng"></i>
+                        NG
+                    </span>
+
+                    <span>
+                        <i class="dot wait"></i>
+                        Belum
+                    </span>
+
+                </div>
+
+
+                <!-- Submit -->
+                <button
+                    class="btn btn-hino btn-lg w-100 mt-4"
+                    type="submit"
+                >
+                    <i class="bi bi-send-check me-2"></i>
+                    Kirim Hasil Inspeksi
+                </button>
+
+                <small class="d-block text-muted mt-3">
+
+                    Setelah dikirim, laporan masuk ke
+                    <b>Pending Approval</b>
+                    untuk Admin.
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+{% endblock %}
+
+
+<!-- =========================
+     JAVASCRIPT INSPEKSI
+========================= -->
+{% block extra_js %}
+
+<script>
+
+    const form = document.getElementById('inspectionForm');
+
+    const cards = [
+        ...document.querySelectorAll('[data-check-card]')
+    ];
+
+
+    /* =========================
+       UPDATE STATUS INSPEKSI
+    ========================= */
+    function update() {
+
+        let done = 0;
+        let ng = 0;
+        let invalid = 0;
+
+        cards.forEach(c => {
+
+            const radios = c.querySelectorAll(
+                'input[type=radio]'
+            );
+
+            const input = c.querySelector(
+                '[data-result-input]'
+            );
+
+            const panel = c.querySelector(
+                '[data-ng-panel]'
+            );
+
+            const result = c.querySelector(
+                '[data-item-result]'
+            );
+
+            let val = '';
+
+
+            /* =========================
+               AMBIL NILAI INPUT
+            ========================= */
+            if (radios.length) {
+
+                val =
+                    c.querySelector(
+                        'input[type=radio]:checked'
+                    )?.value || '';
+
+            } else {
+
+                val =
+                    input?.value.trim() || '';
+
+            }
+
+
+            /* =========================
+               HITUNG ITEM SELESAI
+            ========================= */
+            if (val) {
+                done++;
+            }
+
+
+            /* =========================
+               CEK HASIL NG
+            ========================= */
+            let fail = false;
+
+            if (radios.length) {
+
+                fail = val === 'NG';
+
+                panel.classList.toggle(
+                    'show',
+                    fail
+                );
+
+                const photo =
+                    c.querySelector('[data-ng-photo]');
+
+                if (photo) {
+                    photo.required = fail;
+                }
+
+            } else if (input && val) {
+
+                if (
+                    input.dataset.min !== '' &&
+                    parseFloat(val) <
+                    parseFloat(input.dataset.min)
+                ) {
+
+                    fail = true;
+
+                }
+
+                if (
+                    input.dataset.max !== '' &&
+                    parseFloat(val) >
+                    parseFloat(input.dataset.max)
+                ) {
+
+                    fail = true;
+
+                }
+
+            }
+
+
+            /* =========================
+               UPDATE HASIL ITEM
+            ========================= */
+            result.textContent =
+                !val
+                    ? 'Belum diperiksa'
+                    : (
+                        fail
+                            ? 'NG — perlu perhatian'
+                            : 'OK — sesuai'
+                    );
+
+            result.className =
+                'item-result ' +
+                (
+                    !val
+                        ? 'wait'
+                        : fail
+                            ? 'ng'
+                            : 'ok'
+                );
+
+
+            if (fail) {
+                ng++;
+            }
+
+        });
+
+
+        /* =========================
+           UPDATE PROGRESS
+        ========================= */
+        document.getElementById(
+            'progressText'
+        ).textContent =
+            done +
+            ' / ' +
+            cards.length +
+            ' selesai';
+
+
+        /* =========================
+           UPDATE STATUS AKHIR
+        ========================= */
+        const status =
+            document.getElementById(
+                'overallStatus'
+            );
+
+        status.textContent =
+            ng
+                ? 'NG'
+                : done === cards.length
+                    ? 'OK'
+                    : 'Belum diperiksa';
+
+        status.className =
+            ng
+                ? 'text-danger'
+                : done === cards.length
+                    ? 'text-success'
+                    : 'text-muted';
+
+
+        /* =========================
+           UPDATE INFORMASI STATUS
+        ========================= */
+        document.getElementById(
+            'overallHint'
+        ).textContent =
+            ng
+                ? 'Ada item NG. Pastikan semua bukti foto sudah diambil.'
+                : done === cards.length
+                    ? 'Siap dikirim untuk approval.'
+                    : 'Selesaikan seluruh item pemeriksaan.';
+
+    }
+
+
+    /* =========================
+       EVENT INPUT
+    ========================= */
+    form.addEventListener(
+        'change',
+        update
+    );
+
+    form.addEventListener(
+        'input',
+        update
+    );
+
+
+    /* =========================
+       VALIDASI SUBMIT
+    ========================= */
+    form.addEventListener(
+        'submit',
+        e => {
+
+            let bad = false;
+
+            cards.forEach(c => {
+
+                const req =
+                    c.querySelector(
+                        '[data-required="1"]'
+                    );
+
+                if (
+                    req &&
+                    !c.querySelector(
+                        'input[type=radio]:checked'
+                    ) &&
+                    !c.querySelector(
+                        '[data-result-input]'
+                    )?.value.trim()
+                ) {
+
+                    bad = true;
+
+                }
+
+
+                const ng =
+                    c.querySelector(
+                        'input[type=radio][value="NG"]:checked'
+                    );
+
+                if (
+                    ng &&
+                    !c.querySelector(
+                        '[data-ng-photo]'
+                    ).files.length
+                ) {
+
+                    bad = true;
+
+                }
+
+            });
+
+
+            if (bad) {
+
+                e.preventDefault();
+
+                alert(
+                    'Lengkapi semua pemeriksaan wajib dan foto untuk setiap hasil NG.'
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =========================
+       INITIAL UPDATE
+    ========================= */
+    update();
+
+</script>
+
+{% endblock %}
+```

@@ -1,0 +1,469 @@
+```html
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ laporan.nomor_laporan }} - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+<div class="page-heading">
+
+    <div>
+
+        <h1>
+            {{ laporan.nomor_laporan }}
+        </h1>
+
+        <p>
+            {{ laporan.barang.nama_barang }}
+            ·
+            {{ laporan.tanggal_inspeksi|date:'d M Y H:i' }}
+        </p>
+
+    </div>
+
+    <a
+        href="{% if request.user.is_staff %}{% url 'approval' %}{% else %}{% url 'inspection_history' %}{% endif %}"
+        class="btn btn-light border"
+    >
+        Kembali
+    </a>
+
+</div>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+<div class="row g-4">
+
+    <!-- =========================
+         REPORT DETAIL
+    ========================= -->
+    <div class="col-xl-8">
+
+        <div class="panel-card">
+
+            <!-- Report Summary -->
+            <div class="report-top">
+
+                <!-- Gambar Barang -->
+                <div class="report-object">
+
+                    {% if laporan.barang.gambar %}
+
+                        <img
+                            src="{{ laporan.barang.gambar.url }}"
+                            alt="{{ laporan.barang.nama_barang }}"
+                        >
+
+                    {% else %}
+
+                        <i class="bi bi-box-seam"></i>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Informasi Barang -->
+                <div>
+
+                    <span
+                        class="badge-status
+                        {% if laporan.status_hasil == 'OK' %}
+                            success
+                        {% else %}
+                            danger
+                        {% endif %}"
+                    >
+                        HASIL {{ laporan.status_hasil }}
+                    </span>
+
+                    <h2>
+                        {{ laporan.barang.nama_barang }}
+                    </h2>
+
+                    <p>
+                        {{ laporan.barang.kode_barang }}
+                        ·
+                        {{ laporan.barang.barcode }}
+                    </p>
+
+                </div>
+
+
+                <!-- Status Approval -->
+                <div class="ms-auto">
+
+                    <span
+                        class="badge-status
+                        {% if laporan.status_approval == 'APPROVED' %}
+                            success
+                        {% elif laporan.status_approval == 'REJECTED' %}
+                            danger
+                        {% else %}
+                            warning
+                        {% endif %}"
+                    >
+                        {{ laporan.get_status_approval_display }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 HASIL PEMERIKSAAN
+            ========================= -->
+            <div class="table-responsive mt-4">
+
+                <table class="table modern-table align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                No
+                            </th>
+
+                            <th>
+                                Item Pemeriksaan
+                            </th>
+                            <th>
+                                Hasil
+                            </th>
+
+                            <th>
+                                Catatan
+                            </th>
+
+                            <th>
+                                Bukti NG
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for h in laporan.hasil_parameter.all %}
+
+                        <tr>
+
+                            <!-- Nomor -->
+                            <td>
+                                <b>
+                                    {{ h.parameter.urutan|stringformat:'02d' }}
+                                </b>
+                            </td>
+
+
+                            <!-- Item Pemeriksaan -->
+                            <td>
+
+                                <b>
+                                    {{ h.parameter.nama_parameter }}
+                                </b>
+
+                                <small class="d-block text-muted">
+                                    {{ h.parameter.standar|default:'-' }}
+                                </small>
+
+                            </td>
+
+
+                            <!-- Hasil -->
+                            <td>
+
+                                <span
+                                    class="badge-status
+                                    {% if h.hasil == 'PASS' %}
+                                        success
+                                    {% elif h.hasil == 'FAIL' %}
+                                        danger
+                                    {% else %}
+                                        muted
+                                    {% endif %}"
+                                >
+                                    {{ h.get_hasil_display }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- Catatan -->
+                            <td>
+                                {{ h.catatan|default:'-' }}
+                            </td>
+
+
+                            <!-- Bukti NG -->
+                            <td>
+
+                                {% for f in h.foto_ng.all %}
+
+                                    <a
+                                        href="{{ f.file.url }}"
+                                        target="_blank"
+                                    >
+                                        <img
+                                            class="thumb"
+                                            src="{{ f.file.url }}"
+                                            alt="Bukti NG"
+                                        >
+                                    </a>
+
+                                {% empty %}
+
+                                    -
+
+                                {% endfor %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             KEPUTUSAN ADMIN
+        ========================= -->
+        {% if request.user.is_staff and laporan.status_approval == 'PENDING' %}
+
+        <div class="panel-card mt-4">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <h3>
+                        Keputusan Admin
+                    </h3>
+
+                    <p>
+                        Approve jika bukti dan hasil sudah sesuai.
+                        Reject wajib disertai alasan.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="row g-3">
+
+                <!-- Catatan Approval -->
+                <div class="col-md-8">
+
+                    <textarea
+                        id="approvalNote"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Catatan / alasan reject..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- Tombol Approval -->
+                <div class="col-md-4">
+
+                    <!-- Approve -->
+                    <form
+                        method="post"
+                        action="{% url 'approval_action' laporan.id 'approve' %}"
+                    >
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="catatan"
+                            id="approveNote"
+                        >
+
+                        <button
+                            type="submit"
+                            class="btn btn-success w-100 mb-2"
+                            onclick="document.getElementById('approveNote').value=document.getElementById('approvalNote').value;return confirm('Approve laporan ini?')"
+                        >
+                            <i class="bi bi-check-circle me-2"></i>
+                            Approve
+                        </button>
+
+                    </form>
+
+
+                    <!-- Reject -->
+                    <form
+                        method="post"
+                        action="{% url 'approval_action' laporan.id 'reject' %}"
+                    >
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="catatan"
+                            id="rejectNote"
+                        >
+
+                        <button
+                            type="submit"
+                            class="btn btn-outline-danger w-100"
+                            onclick="const n=document.getElementById('approvalNote').value.trim();if(!n){alert('Alasan reject wajib diisi.');return false;}document.getElementById('rejectNote').value=n;return confirm('Reject laporan ini?')"
+                        >
+                            <i class="bi bi-x-circle me-2"></i>
+                            Reject
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =========================
+         SIDEBAR INFORMASI
+    ========================= -->
+    <div class="col-xl-4">
+
+        <!-- =========================
+             INFORMASI LAPORAN
+        ========================= -->
+        <div class="panel-card">
+
+            <h3>
+                Informasi Laporan
+            </h3>
+
+            <div class="info-list">
+
+                <!-- Petugas -->
+                <div>
+
+                    <span>
+                        Petugas
+                    </span>
+
+                    <b>
+                        {{ laporan.user.get_full_name|default:laporan.user.username }}
+                    </b>
+
+                </div>
+
+
+                <!-- Tanggal -->
+                <div>
+
+                    <span>
+                        Tanggal
+                    </span>
+
+                    <b>
+                        {{ laporan.tanggal_inspeksi|date:'d M Y H:i' }}
+                    </b>
+
+                </div>
+
+
+                <!-- Hasil -->
+                <div>
+
+                    <span>
+                        Hasil
+                    </span>
+
+                    <b>
+                        {{ laporan.status_hasil }}
+                    </b>
+
+                </div>
+
+
+                <!-- Approval -->
+                <div>
+
+                    <span>
+                        Approval
+                    </span>
+
+                    <b>
+                        {{ laporan.get_status_approval_display }}
+                    </b>
+
+                </div>
+
+
+                <!-- Reviewer -->
+                {% if laporan.approved_by %}
+
+                <div>
+
+                    <span>
+                        Reviewer
+                    </span>
+
+                    <b>
+                        {{ laporan.approved_by.username }}
+                    </b>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Catatan Laporan -->
+            {% if laporan.catatan %}
+
+            <div class="note-box">
+
+                <b>
+                    Catatan
+                </b>
+
+                <p>
+                    {{ laporan.catatan }}
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+```

@@ -1,0 +1,3000 @@
+/* =========================================================
+   ROOT / VARIABLES
+========================================================= */
+
+:root {
+    --hino: #d71920;
+    --hino-dark: #a90f15;
+    --ink: #20252b;
+    --muted: #6b7280;
+    --line: #e7e9ed;
+    --bg: #f5f6f8;
+    --card: #fff;
+    --ok: #16824b;
+    --ng: #c51f2a;
+    --warn: #b66a00;
+    --shadow: 0 12px 32px rgba(26, 32, 44, .06);
+}
+
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, Segoe UI, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* =========================================================
+   APP LAYOUT
+========================================================= */
+
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 260px;
+    background: #fff;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    z-index: 20;
+}
+
+
+/* =========================
+   BRAND
+========================= */
+
+.brand-wrap {
+    height: 82px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+}
+
+.hino-logo {
+    width: 62px;
+    height: 55px;
+    object-fit: contain;
+    background: #fff;
+}
+
+.brand-wrap strong {
+    display: block;
+    font-size: 19px;
+    letter-spacing: .5px;
+}
+
+.brand-wrap small {
+    display: block;
+    color: #89909a;
+    font-size: 10px;
+}
+
+
+/* =========================
+   SIDEBAR USER
+========================= */
+
+.sidebar-caption {
+    padding: 18px 20px 5px;
+    color: #9aa0a8;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+
+/* =========================
+   SIDEBAR NAVIGATION
+========================= */
+
+.sidebar-nav {
+    padding: 0 12px;
+    overflow: auto;
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    color: #9aa0a8;
+    padding: 18px 10px 7px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 45px;
+    border-radius: 10px;
+    padding: 0 12px;
+    margin: 3px 0;
+    color: #5e6670;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.nav-link i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.nav-link:hover {
+    background: #fff2f2;
+    color: var(--hino);
+}
+
+.nav-badge {
+    margin-left: auto;
+    background: #fbe1e3;
+    color: var(--hino);
+    border-radius: 20px;
+    padding: 2px 7px;
+    font-size: 10px;
+}
+
+
+/* =========================
+   SIDEBAR FOOTER
+========================= */
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 15px;
+    border-top: 1px solid var(--line);
+}
+
+.company-mini {
+    background: #f8f8f9;
+    border-radius: 10px;
+    padding: 11px;
+}
+
+.company-mini span {
+    display: block;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.company-mini small {
+    display: block;
+    color: #9298a0;
+    font-size: 9px;
+    line-height: 1.35;
+    margin-top: 2px;
+}
+
+.logout {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+    padding: 12px 5px;
+    color: #777;
+    font-size: 12px;
+}
+
+.logout:hover {
+    color: var(--hino);
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.main-content {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+    height: 70px;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.topbar-title {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    color: #8a9098;
+}
+
+.top-user {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.top-user b {
+    display: block;
+    font-size: 12px;
+}
+
+.top-user small {
+    display: block;
+    color: #969ca5;
+    font-size: 10px;
+}
+
+.user-dot {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #f9dfe1;
+    color: var(--hino);
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   PAGE CONTENT
+========================================================= */
+
+.page-content {
+    padding: 30px 34px 50px;
+    max-width: 1500px;
+    margin: auto;
+}
+
+
+/* =========================================================
+   PAGE / HERO HEADING
+========================================================= */
+
+.hero-heading,
+.page-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.hero-heading h1,
+.page-heading h1 {
+    margin: 3px 0 7px;
+    font-size: 30px;
+    letter-spacing: -.8px;
+}
+
+.hero-heading p,
+.page-heading p {
+    margin: 0;
+    color: #737a83;
+    font-size: 13px;
+}
+
+.eyebrow {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    color: var(--hino);
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.btn-hino {
+    background: var(--hino);
+    border-color: var(--hino);
+    color: #fff;
+    font-weight: 700;
+}
+
+.btn-hino:hover {
+    background: var(--hino-dark);
+    border-color: var(--hino-dark);
+    color: #fff;
+}
+
+
+/* =========================================================
+   PANEL / CARD
+========================================================= */
+
+.panel-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+}
+
+.panel-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.panel-head h3 {
+    font-size: 17px;
+    margin: 0 0 4px;
+}
+
+.panel-head p {
+    font-size: 12px;
+    color: #858b93;
+    margin: 0;
+}
+
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 19px;
+    min-height: 135px;
+    position: relative;
+    box-shadow: var(--shadow);
+}
+
+.stat-card small {
+    display: block;
+    color: #7b828b;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.stat-card strong {
+    display: block;
+    font-size: 30px;
+    margin-top: 9px;
+}
+
+.stat-card em {
+    font-style: normal;
+    color: #a0a5ad;
+    font-size: 10px;
+}
+
+.stat-icon {
+    position: absolute;
+    right: 17px;
+    top: 17px;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #fff1f2;
+    color: var(--hino);
+    display: grid;
+    place-items: center;
+}
+
+.alert-stat {
+    border-color: #f1d8da;
+}
+
+
+/* =========================================================
+   STATUS BADGE
+========================================================= */
+
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 999px;
+    padding: 5px 9px;
+    font-size: 10px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.badge-status.success {
+    background: #e6f6ed;
+    color: var(--ok);
+}
+
+.badge-status.danger {
+    background: #fde8e9;
+    color: var(--ng);
+}
+
+.badge-status.warning {
+    background: #fff2d8;
+    color: var(--warn);
+}
+
+.badge-status.muted {
+    background: #eef0f2;
+    color: #7d858d;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.modern-table {
+    margin: 0;
+    font-size: 12px;
+}
+
+.modern-table thead th {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: #8d949d;
+    background: #fafafa;
+    border-bottom: 1px solid var(--line);
+    padding: 12px;
+}
+
+.modern-table tbody td {
+    padding: 13px 12px;
+    border-bottom: 1px solid #f0f1f3;
+    vertical-align: middle;
+}
+
+.modern-table tbody tr:hover {
+    background: #fcfcfc;
+}
+
+.modern-table small {
+    font-size: 10px;
+    color: #969ca4;
+}
+
+.empty-inline {
+    text-align: center !important;
+    color: #999;
+    padding: 35px !important;
+}
+
+
+/* =========================================================
+   QUICK ACTION
+========================================================= */
+
+.quick-action {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 13px 0;
+    border-bottom: 1px solid #f0f1f3;
+}
+
+.quick-action:last-child {
+    border-bottom: 0;
+}
+
+.quick-action > span {
+    width: 37px;
+    height: 37px;
+    border-radius: 10px;
+    background: #fff1f2;
+    color: var(--hino);
+    display: grid;
+    place-items: center;
+}
+
+.quick-action div {
+    flex: 1;
+}
+
+.quick-action b {
+    display: block;
+    font-size: 12px;
+}
+
+.quick-action small {
+    display: block;
+    color: #9299a1;
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+.quick-action > i {
+    font-size: 12px;
+    color: #aaa;
+}
+
+
+/* =========================================================
+   WORKFLOW / INFO
+========================================================= */
+
+.workflow-banner,
+.info-tip {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-top: 18px;
+    background: #fff8f8;
+    border: 1px solid #f5dddd;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.workflow-banner > i,
+.info-tip > i {
+    font-size: 19px;
+    color: var(--hino);
+}
+
+.workflow-banner b,
+.info-tip b {
+    font-size: 12px;
+}
+
+.workflow-banner p,
+.info-tip p {
+    margin: 3px 0 0;
+    color: #777;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   PRODUCT / MASTER DATA
+========================================================= */
+
+.table-product {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.table-product img,
+.table-product > span {
+    width: 42px;
+    height: 42px;
+    border-radius: 9px;
+    object-fit: cover;
+    border: 1px solid var(--line);
+}
+
+.table-product > span {
+    display: grid;
+    place-items: center;
+    background: #f6f7f8;
+    color: #9da3aa;
+}
+
+.table-product b,
+.table-product small {
+    display: block;
+}
+
+
+/* =========================================================
+   SEARCH / FILTER
+========================================================= */
+
+.search-box {
+    height: 43px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    flex: 1;
+}
+
+.search-box i {
+    color: #9ca3ab;
+}
+
+.search-box input {
+    border: 0;
+    outline: 0;
+    width: 100%;
+    margin-left: 8px;
+    font-size: 12px;
+}
+
+.filter-row {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-row .btn {
+    height: 43px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-section-title {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 17px;
+}
+
+.panel-card label {
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #4f565e;
+}
+
+.form-control,
+.form-select {
+    border-color: #dfe2e6;
+    border-radius: 8px;
+    font-size: 12px;
+    padding: 10px 12px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #e49a9e;
+    box-shadow: 0 0 0 3px rgba(215, 25, 32, .08);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+
+/* =========================================================
+   IMAGE / PREVIEW
+========================================================= */
+
+.preview-image {
+    width: 100%;
+    max-height: 240px;
+    object-fit: contain;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fafafa;
+}
+
+.image-placeholder {
+    min-height: 190px;
+    border: 1px dashed #d9dde1;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #a1a7ad;
+    background: #fafafa;
+    gap: 8px;
+}
+
+.image-placeholder i {
+    font-size: 34px;
+}
+
+.item-hero-image img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+}
+
+.reference-img {
+    width: 100%;
+    max-height: 170px;
+    object-fit: contain;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    margin: 5px 0 8px;
+}
+
+
+/* =========================================================
+   INFORMATION
+========================================================= */
+
+.info-list > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f1f3;
+    font-size: 11px;
+}
+
+.info-list span {
+    color: #90969e;
+}
+
+.note-box {
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 14px;
+}
+
+.note-box b {
+    font-size: 11px;
+}
+
+.note-box p {
+    font-size: 11px;
+    color: #737a82;
+    margin: 5px 0 0;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   INSPECTION CONFIGURATION
+========================================================= */
+
+.inspection-config {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 17px 0;
+    border-bottom: 1px solid #eff0f2;
+}
+
+.inspection-config:last-child {
+    border-bottom: 0;
+}
+
+.number-box,
+.check-no {
+    flex: 0 0 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #fbe8e9;
+    color: var(--hino);
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.inspection-config small {
+    font-size: 10px;
+    color: #7d858d;
+}
+
+
+/* =========================================================
+   INSPECTION SUMMARY
+========================================================= */
+
+.inspection-summary {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.summary-image {
+    width: 180px;
+    height: 135px;
+    flex: 0 0 180px;
+}
+
+.summary-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+    background: #fafafa;
+}
+
+.summary-image .image-placeholder {
+    min-height: 135px;
+}
+
+.inspection-summary h2 {
+    font-size: 23px;
+    margin: 8px 0 5px;
+}
+
+.inspection-summary p {
+    font-size: 12px;
+    color: #767d85;
+    max-width: 720px;
+}
+
+.summary-meta {
+    display: flex;
+    gap: 18px;
+    color: #777;
+    font-size: 10px;
+}
+
+.summary-meta b {
+    color: #333;
+}
+
+
+/* =========================================================
+   SUMMARY LIST
+========================================================= */
+
+.summary-list h4 {
+    font-size: 14px;
+    margin: 0 0 12px;
+}
+
+.summary-item {
+    display: flex;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid #f0f1f3;
+}
+
+.summary-item > span {
+    width: 35px;
+    height: 35px;
+    border-radius: 9px;
+    background: #f8e5e6;
+    color: var(--hino);
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: 10px;
+}
+
+.summary-item b {
+    font-size: 12px;
+}
+
+.summary-item p {
+    font-size: 11px;
+    color: #777;
+    margin: 3px 0;
+}
+
+.summary-item small {
+    font-size: 10px;
+    color: #999;
+}
+
+
+/* =========================================================
+   SCANNER
+========================================================= */
+
+.scanner-box {
+    height: 330px;
+    background: #16191c;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    display: grid;
+    place-items: center;
+}
+
+.scanner-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.scanner-placeholder {
+    color: #c6cbd0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.scanner-placeholder i {
+    font-size: 40px;
+}
+
+.scanner-placeholder small {
+    font-size: 10px;
+    color: #999;
+}
+
+.scan-frame {
+    position: absolute;
+    width: 65%;
+    height: 40%;
+    border: 2px solid rgba(255, 255, 255, .85);
+    border-radius: 12px;
+    display: none;
+}
+
+.scan-frame span {
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    height: 2px;
+    top: 50%;
+    background: var(--hino);
+    box-shadow: 0 0 12px var(--hino);
+}
+
+.scanner-actions {
+    display: flex;
+    gap: 9px;
+    margin-top: 12px;
+}
+
+.scanner-note {
+    font-size: 10px;
+    color: #90969e;
+    margin-top: 10px;
+}
+
+
+/* =========================================================
+   CHECKSHEET
+========================================================= */
+
+.check-card {
+    display: flex;
+    gap: 14px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 14px;
+    box-shadow: var(--shadow);
+}
+
+.check-body {
+    flex: 1;
+}
+
+.check-head {
+    display: flex;
+    justify-content: space-between;
+}
+
+.check-head h4 {
+    font-size: 15px;
+    margin: 1px 0 6px;
+}
+
+.instruction {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.6;
+    margin: 12px 0 8px;
+}
+
+.standard-box {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 13px;
+}
+
+
+/* =========================================================
+   OK / NG INPUT
+========================================================= */
+
+.okng-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.okng-group input {
+    display: none;
+}
+
+.okng-group label {
+    margin: 0 !important;
+    border: 1px solid #dfe2e6;
+    border-radius: 11px;
+    padding: 13px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 8px;
+    align-items: center;
+    cursor: pointer;
+    background: #fff;
+}
+
+.okng-group label small {
+    grid-column: 2;
+    color: #999;
+    font-size: 9px;
+}
+
+.okng-group label i {
+    grid-row: 1 / 3;
+    font-size: 22px;
+}
+
+.okng-group input:checked + label.ok-choice {
+    border-color: #70c49b;
+    background: #eefaf3;
+    color: var(--ok);
+}
+
+.okng-group input:checked + label.ng-choice {
+    border-color: #e7a0a5;
+    background: #fff0f1;
+    color: var(--ng);
+}
+
+
+/* =========================================================
+   NG PANEL
+========================================================= */
+
+.ng-panel {
+    display: none;
+    background: #fff5f5;
+    border: 1px solid #f0d1d4;
+    border-radius: 9px;
+    padding: 11px;
+    margin-top: 10px;
+}
+
+.ng-panel.show {
+    display: block;
+}
+
+.ng-panel small {
+    font-size: 9px;
+    color: #9b6d70;
+}
+
+.ng-panel b {
+    color: var(--hino);
+}
+
+
+/* =========================================================
+   ITEM RESULT
+========================================================= */
+
+.item-result {
+    font-size: 10px;
+    font-weight: 800;
+    margin-top: 9px;
+}
+
+.item-result.ok {
+    color: var(--ok);
+}
+
+.item-result.ng {
+    color: var(--ng);
+}
+
+.item-result.wait {
+    color: #999;
+}
+
+
+/* =========================================================
+   REPORT / SUMMARY
+========================================================= */
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.section-title h3 {
+    font-size: 18px;
+    margin: 4px 0;
+}
+
+.section-title p {
+    font-size: 11px;
+    color: #888;
+    margin: 0;
+}
+
+.progress-label {
+    font-size: 11px;
+    color: #888;
+}
+
+.summary-side {
+    padding: 8px 0;
+}
+
+.summary-side span {
+    display: block;
+    font-size: 11px;
+    color: #888;
+}
+
+.summary-side strong {
+    display: block;
+    font-size: 30px;
+    margin: 5px 0;
+}
+
+.summary-side small {
+    color: #888;
+    font-size: 10px;
+}
+
+.mini-legend {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 0;
+    font-size: 10px;
+    color: #777;
+}
+
+.dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-right: 3px;
+}
+
+.dot.ok {
+    background: var(--ok);
+}
+
+.dot.ng {
+    background: var(--ng);
+}
+
+.dot.wait {
+    background: #aaa;
+}
+
+
+/* =========================================================
+   REPORT HEADER
+========================================================= */
+
+.report-top {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.report-object {
+    width: 70px;
+    height: 60px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: #fafafa;
+}
+
+.report-object img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.report-top h2 {
+    font-size: 19px;
+    margin: 6px 0 3px;
+}
+
+.report-top p {
+    margin: 0;
+    color: #777;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   DOCUMENTATION PHOTO
+========================================================= */
+
+.thumb {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    border-radius: 7px;
+    border: 1px solid var(--line);
+}
+
+.doc-photo {
+    display: block;
+    margin-top: 10px;
+}
+
+.doc-photo img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+.doc-photo span {
+    display: block;
+    font-size: 10px;
+    color: #777;
+    margin-top: 4px;
+}
+
+
+/* =========================================================
+   REPORT FILTER
+========================================================= */
+
+.filter-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 14px;
+}
+
+.filter-tabs a {
+    padding: 8px 14px;
+    border-radius: 8px;
+    color: #777;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.filter-tabs a.active {
+    background: #f9e2e4;
+    color: var(--hino);
+}
+
+.report-filter {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+    gap: 10px;
+    align-items: end;
+}
+
+.report-filter label {
+    display: block;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 6px;
+}
+
+
+/* =========================================================
+   MOBILE FLOW
+========================================================= */
+
+.mobile-flow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.mobile-flow > div {
+    flex: 1;
+    text-align: center;
+}
+
+.mobile-flow span {
+    width: 36px;
+    height: 36px;
+    background: #fbe7e8;
+    color: var(--hino);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 6px;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.mobile-flow b {
+    display: block;
+    font-size: 12px;
+}
+
+.mobile-flow small {
+    font-size: 9px;
+    color: #999;
+}
+
+.mobile-flow > i {
+    color: #aaa;
+}
+
+
+/* =========================================================
+   RECENT INSPECTION
+========================================================= */
+
+.recent-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 0;
+    border-bottom: 1px solid #f0f1f3;
+}
+
+.recent-row b {
+    display: block;
+    font-size: 11px;
+}
+
+.recent-row small {
+    display: block;
+    color: #999;
+    font-size: 9px;
+    margin-top: 2px;
+}
+
+
+/* =========================================================
+   LOGIN PAGE
+========================================================= */
+
+.login-body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f4f5f6, #fff);
+    display: grid;
+    place-items: center;
+    padding: 25px;
+}
+
+.login-card {
+    width: min(980px, 100%);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: 0 25px 70px rgba(20, 25, 30, .08);
+    padding: 42px;
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 55px;
+}
+
+.login-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.login-brand img {
+    width: 65px;
+    height: 55px;
+    object-fit: contain;
+}
+
+.login-brand b {
+    display: block;
+    font-size: 19px;
+}
+
+.login-brand small {
+    display: block;
+    color: #888;
+    font-size: 10px;
+}
+
+.login-copy {
+    align-self: center;
+}
+
+.login-copy > span {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    color: var(--hino);
+}
+
+.login-copy h1 {
+    font-size: 42px;
+    letter-spacing: -1.5px;
+    margin: 10px 0;
+}
+
+.login-copy p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #777;
+}
+
+.login-card form {
+    align-self: center;
+}
+
+.login-card form label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    margin: 8px 0;
+}
+
+.login-footer {
+    color: #999;
+    font-size: 9px;
+    display: block;
+    margin-top: 25px;
+}
+
+
+/* =========================================================
+   HMMI SUMMARY SHEET
+========================================================= */
+
+.summary-sheet {
+    overflow: hidden;
+}
+
+.summary-sheet-head {
+    padding-bottom: 18px;
+    border-bottom: 1px solid #eceff3;
+    margin-bottom: 22px;
+}
+
+.summary-image.large {
+    min-height: 300px;
+    background: #f7f8fa;
+    border: 1px dashed #d9dde3;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.summary-image.large img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+}
+
+.summary-number {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    background: #f4f5f7;
+    font-weight: 800;
+}
+
+.summary-table thead th {
+    background: #f6f7f9;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.summary-table td,
+.summary-table th {
+    padding: 14px 12px;
+}
+
+
+/* =========================================================
+   SERVER
+========================================================= */
+
+.health-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #edf0f3;
+}
+
+.server-time {
+    font-weight: 700;
+    color: #6b7280;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+/* =========================
+   TABLET / SMALL DESKTOP
+========================= */
+
+@media (max-width: 1100px) {
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .report-filter {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .filter-actions {
+        grid-column: 1 / -1;
+    }
+
+    .sidebar {
+        width: 220px;
+    }
+
+    .main-content {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+    }
+}
+
+
+/* =========================
+   TABLET / MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        min-height: auto;
+    }
+
+    .app-shell {
+        display: block;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .sidebar-nav {
+        display: none;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .topbar {
+        padding: 0 18px;
+    }
+
+    .page-content {
+        padding: 20px 15px 35px;
+    }
+
+    .hero-heading,
+    .page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .inspection-summary {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .summary-image {
+        width: 100%;
+        height: 180px;
+        flex-basis: auto;
+    }
+
+    .login-card {
+        grid-template-columns: 1fr;
+        padding: 25px;
+        gap: 20px;
+    }
+
+    .login-copy h1 {
+        font-size: 32px;
+    }
+
+    .report-filter {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-actions {
+        grid-column: auto;
+    }
+
+    .check-card {
+        padding: 13px;
+    }
+
+    .check-no {
+        flex-basis: 34px;
+        height: 34px;
+    }
+
+    .top-user div {
+        display: none;
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 500px) {
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .okng-group {
+        grid-template-columns: 1fr;
+    }
+
+    .mobile-flow > i {
+        display: none;
+    }
+
+    .mobile-flow {
+        gap: 2px;
+    }
+
+    .hero-heading h1,
+    .page-heading h1 {
+        font-size: 25px;
+    }
+}
+
+/* =========================================================
+   CHECKSHEET LOGIN PAGE
+========================================================= */
+
+.login-page {
+    min-height: 100vh;
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(225, 29, 38, 0.07),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #f8f9fb 0%,
+            #eef1f5 100%
+        );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color: #172033;
+}
+
+
+/* =========================================================
+   WRAPPER
+========================================================= */
+
+.login-wrapper {
+    width: 100%;
+    max-width: 1080px;
+
+    padding: 30px;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.login-container {
+    display: grid;
+
+    grid-template-columns:
+        1.05fr
+        0.95fr;
+
+    min-height: 620px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 70px rgba(15, 23, 42, 0.10);
+}
+
+
+/* =========================================================
+   LEFT PANEL
+========================================================= */
+
+.login-left {
+    position: relative;
+
+    padding: 55px 55px 42px;
+
+    display: flex;
+    flex-direction: column;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff 0%,
+            #fafafa 65%,
+            #f6f7f9 100%
+        );
+}
+
+
+/* RED ACCENT */
+
+.login-left::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 5px;
+    height: 100%;
+
+    background: #df1019;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.login-brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.login-brand img {
+    width: 58px;
+    height: 58px;
+
+    object-fit: contain;
+
+    border-radius: 8px;
+}
+
+
+.login-brand strong {
+    display: block;
+
+    font-size: 21px;
+
+    letter-spacing: 0.5px;
+
+    color: #111827;
+}
+
+
+.login-brand span {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 12px;
+
+    color: #7b8494;
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.login-intro {
+    margin-top: 105px;
+
+    max-width: 470px;
+}
+
+
+/* =========================================================
+   HINO MOTORS MANUFACTURING INDONESIA
+========================================================= */
+
+.login-eyebrow {
+    margin-top: 115px;
+
+    margin-bottom: 20px;
+
+    color: #df1019;
+
+    font-size: 11px;
+
+    font-weight: 750;
+
+    letter-spacing: 2px;
+
+    line-height: 1.4;
+}
+
+
+.login-intro h1 {
+    margin: 0;
+
+    font-size: 48px;
+
+    line-height: 1.08;
+
+    font-weight: 300;
+
+    letter-spacing: -1.5px;
+
+    color: #172033;
+}
+
+
+.login-intro h1 strong {
+    font-weight: 700;
+}
+
+
+.login-intro p {
+    max-width: 430px;
+
+    margin-top: 20px;
+
+    margin-bottom: 0;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+
+    color: #697386;
+}
+
+
+/* =========================================================
+   SYSTEM INFO
+========================================================= */
+
+.login-info {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+    margin-top: 42px;
+
+    padding-bottom: 10px;
+}
+
+
+.login-info-item {
+    width: 100%;
+
+    min-height: 54px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 0;
+
+    background: transparent;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.login-info-item > i {
+    flex-shrink: 0;
+
+    width: 48px;
+
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: rgba(223, 16, 25, 0.10);
+
+    border: 1px solid rgba(223, 16, 25, 0.30);
+
+    color: #df1019;
+
+    font-size: 18px;
+}
+
+
+.login-info-item strong {
+    display: block;
+
+    font-size: 13px;
+
+    line-height: 1.2;
+
+    font-weight: 700;
+
+    color: #172033;
+}
+
+.login-info-item span {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+
+    color: #7f8998;
+}
+
+
+/* =========================================================
+   COMPANY / HMMI
+========================================================= */
+
+.login-company {
+    margin-top: auto;
+
+    padding-top: 22px;
+
+    position: relative;
+
+    z-index: 5;
+}
+
+
+/* Garis merah di atas HMMI */
+
+.login-company::before {
+    content: "";
+
+    display: block;
+
+    width: 62px;
+
+    height: 3px;
+
+    margin-bottom: 10px;
+
+    background: #df1019;
+
+    border-radius: 2px;
+}
+
+
+/* HMMI */
+
+.login-company strong {
+    display: block;
+
+    font-size: 14px;
+
+    line-height: 1.2;
+
+    font-weight: 750;
+
+    color: #172033;
+}
+
+
+/* Hino Motors Manufacturing Indonesia */
+
+.login-company span {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+
+    color: #9299a5;
+}
+
+/* =========================================================
+   RIGHT PANEL
+========================================================= */
+
+.login-right {
+    padding: 70px 70px 45px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    background: #ffffff;
+}
+
+
+/* =========================================================
+   FORM HEADING
+========================================================= */
+
+.login-form-heading {
+    margin-bottom: 38px;
+}
+
+
+.login-form-heading > span {
+    display: block;
+
+    margin-bottom: 10px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.8px;
+
+    color: #df1019;
+}
+
+
+.login-form-heading h2 {
+    margin: 0;
+
+    font-size: 32px;
+
+    font-weight: 650;
+
+    letter-spacing: -0.7px;
+
+    color: #172033;
+}
+
+
+.login-form-heading p {
+    margin-top: 10px;
+    margin-bottom: 0;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    color: #7b8494;
+}
+
+
+/* =========================================================
+   FORM FIELD
+========================================================= */
+
+.login-field {
+    margin-bottom: 20px;
+}
+
+
+.login-field label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 12px;
+
+    font-weight: 650;
+
+    color: #374151;
+}
+
+
+.input-icon {
+    position: relative;
+}
+
+
+.input-icon > i {
+    position: absolute;
+
+    left: 17px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #9aa2af;
+
+    font-size: 16px;
+
+    pointer-events: none;
+}
+
+
+.input-icon input {
+    width: 100%;
+
+    height: 52px;
+
+    padding:
+        0 16px 0 46px;
+
+    border: 1px solid #dfe3e8;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background: #fafbfc;
+
+    color: #172033;
+
+    font-size: 13px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.input-icon input::placeholder {
+    color: #a5acb8;
+}
+
+
+.input-icon input:focus {
+    border-color: #df1019;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 3px rgba(223, 16, 25, 0.08);
+}
+
+
+/* =========================================================
+   LOGIN PAGE
+========================================================= */
+
+.login-body {
+    margin: 0;
+
+    min-height: 100vh;
+
+    background: #f4f6f9;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color: #14263d;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+/* =========================================================
+   WRAPPER
+========================================================= */
+
+.login-wrapper {
+    width: 100%;
+
+    max-width: 1390px;
+
+    padding: 30px;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
+.login-container {
+    position: relative;
+
+    min-height: 740px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 0.86fr;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e5ea;
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 20px 55px rgba(15, 35, 60, 0.08);
+}
+
+
+/* =========================================================
+   LEFT
+========================================================= */
+
+.login-left {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 60px 62px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #172b43 0%,
+            #0d2138 100%
+        );
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   DECORATIVE CIRCLE
+========================================================= */
+
+.login-circle {
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+
+.login-circle-top {
+    width: 430px;
+
+    height: 430px;
+
+    top: -230px;
+
+    right: -230px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+
+.login-circle-bottom {
+    width: 300px;
+
+    height: 300px;
+
+    right: -120px;
+
+    bottom: -150px;
+
+    background: rgba(223, 16, 25, 0.08);
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.login-brand {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+}
+
+
+.login-logo-box {
+    width: 64px;
+
+    height: 64px;
+
+    background: #ffffff;
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+
+.login-logo-box img {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.login-brand-title {
+    font-size: 25px;
+
+    font-weight: 750;
+
+    letter-spacing: -0.5px;
+
+    color: #ffffff;
+}
+
+
+.login-brand-subtitle {
+    margin-top: 2px;
+
+    font-size: 13px;
+
+    color: #b9c8da;
+}
+
+
+/* =========================================================
+   COMPANY NAME
+   POSISI: DI BAWAH LOGO / BRAND
+   DAN DI ATAS INSPECTION
+========================================================= */
+
+.login-company {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 105px;
+
+    color: #ff2630;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 2.4px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.login-intro {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 24px;
+}
+
+
+.login-intro h1 {
+    margin: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    font-size: 57px;
+
+    line-height: 0.98;
+
+    letter-spacing: -2.5px;
+
+    font-weight: 300;
+}
+
+
+.login-intro h1 span {
+    font-weight: 300;
+}
+
+
+.login-intro h1 strong {
+    font-weight: 800;
+}
+
+
+.login-intro p {
+    max-width: 550px;
+
+    margin-top: 26px;
+
+    margin-bottom: 0;
+
+    color: #b9c8da;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   INFORMATION
+========================================================= */
+
+.login-info {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 43px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+.login-info-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+.login-info-icon {
+    width: 47px;
+
+    height: 47px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid rgba(255, 31, 42, 0.38);
+
+    border-radius: 10px;
+
+    background: rgba(223, 16, 25, 0.10);
+
+    color: #ff3a43;
+
+    font-size: 20px;
+}
+
+
+.login-info-item strong {
+    display: block;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+.login-info-item span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #9db1c8;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   LEFT FOOTER
+========================================================= */
+
+.login-left-footer {
+    position: absolute;
+
+    z-index: 3;
+
+    left: 62px;
+
+    bottom: 34px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.login-left-footer strong {
+    color: #ff1822;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+
+.login-left-footer span {
+    color: #8197ae;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   RIGHT
+========================================================= */
+
+.login-right {
+    padding: 110px 78px 55px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    background: #ffffff;
+}
+
+
+/* =========================================================
+   FORM HEADING
+========================================================= */
+
+.login-form-heading span {
+    color: #df1019;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 2.5px;
+}
+
+
+.login-form-heading h2 {
+    margin: 15px 0 8px;
+
+    color: #14263d;
+
+    font-size: 36px;
+
+    font-weight: 750;
+
+    letter-spacing: -1px;
+}
+
+
+.login-form-heading p {
+    margin: 0;
+
+    color: #78879a;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.login-form {
+    margin-top: 43px;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.login-field {
+    margin-bottom: 24px;
+}
+
+
+.login-field label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #14263d;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.login-input {
+    height: 55px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 16px;
+
+    border: 1px solid #dce2e9;
+
+    border-radius: 10px;
+
+    background: #f8fafc;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.login-input i {
+    flex-shrink: 0;
+
+    color: #8795a7;
+
+    font-size: 16px;
+}
+
+
+.login-input input {
+    width: 100%;
+
+    height: 100%;
+
+    padding: 0;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: #14263d;
+
+    font-size: 14px;
+}
+
+
+.login-input input::placeholder {
+    color: #a4afbc;
+}
+
+
+/* =========================================================
+   INPUT FOCUS
+========================================================= */
+
+.login-input:focus-within {
+    border-color: #df1019;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 3px rgba(223, 16, 25, 0.08);
+}
+
+
+.login-input:focus-within i {
+    color: #df1019;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-button {
+    width: 100%;
+
+    height: 55px;
+
+    margin-top: 8px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #df1019;
+
+    color: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.login-button:hover {
+    background: #c90e17;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 20px rgba(223, 16, 25, 0.20);
+}
+
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+
+.login-button i {
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   ALERT
+========================================================= */
+
+.login-alert {
+    margin-bottom: 20px;
+}
+
+
+.login-alert .alert {
+    margin: 0;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   RIGHT FOOTER
+========================================================= */
+
+.login-footer {
+    margin-top: auto;
+
+    padding-top: 24px;
+
+    border-top: 1px solid #edf0f3;
+}
+
+
+.login-footer span {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    color: #9aa5b2;
+
+    font-size: 10px;
+}
+
+
+.login-footer i {
+    color: #df1019;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .login-container {
+        grid-template-columns: 1fr 0.9fr;
+    }
+
+    .login-left {
+        padding: 50px 45px;
+    }
+
+    .login-right {
+        padding: 80px 45px 45px;
+    }
+
+    .login-company {
+        margin-top: 80px;
+    }
+
+    .login-intro h1 {
+        font-size: 48px;
+    }
+
+    .login-left-footer {
+        left: 45px;
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .login-wrapper {
+        padding: 15px;
+    }
+
+    .login-container {
+        grid-template-columns: 1fr;
+
+        min-height: auto;
+    }
+
+    .login-left {
+        min-height: 650px;
+    }
+
+    .login-right {
+        padding: 55px 40px 40px;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .login-wrapper {
+        padding: 10px;
+    }
+
+    .login-container {
+        border-radius: 16px;
+    }
+
+    .login-left {
+        min-height: 610px;
+
+        padding: 35px 25px;
+    }
+
+    .login-brand-title {
+        font-size: 21px;
+    }
+
+    .login-logo-box {
+        width: 55px;
+        height: 55px;
+    }
+
+    .login-company {
+        margin-top: 65px;
+
+        font-size: 9px;
+
+        letter-spacing: 1.6px;
+    }
+
+    .login-intro {
+        margin-top: 18px;
+    }
+
+    .login-intro h1 {
+        font-size: 42px;
+    }
+
+    .login-intro p {
+        font-size: 12px;
+    }
+
+    .login-info {
+        margin-top: 35px;
+    }
+
+    .login-left-footer {
+        left: 25px;
+
+        bottom: 25px;
+    }
+
+    .login-right {
+        padding: 40px 25px 30px;
+    }
+
+    .login-form-heading h2 {
+        font-size: 30px;
+    }
+
+}
+

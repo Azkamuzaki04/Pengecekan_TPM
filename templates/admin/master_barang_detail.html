@@ -1,0 +1,281 @@
+```html
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ barang.nama_barang }} - CHECKSHEET
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+<div class="page-heading">
+
+    <div>
+
+        <div class="eyebrow">
+            MASTER Equipment
+        </div>
+
+        <h1>
+            {{ barang.nama_barang }}
+        </h1>
+
+        <p>
+            {{ barang.kode_barang }}
+            ·
+            Barcode {{ barang.barcode }}
+        </p>
+
+    </div>
+
+
+    <div>
+
+        <a href="{% url 'master_barang_edit' barang.id %}"
+           class="btn btn-light border me-2">
+            <i class="bi bi-pencil me-2"></i>
+            Edit Barang
+        </a>
+
+        <a href="{% url 'master_barang' %}"
+           class="btn btn-light border">
+            Kembali
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CONTENT
+========================= -->
+<div class="row g-4">
+
+    <!-- =====================
+         INFORMASI BARANG
+    ====================== -->
+    <div class="col-xl-4">
+
+        <div class="panel-card">
+
+            <!-- Gambar Barang -->
+            <div class="item-hero-image">
+
+                {% if barang.gambar %}
+
+                    <img src="{{ barang.gambar.url }}"
+                         alt="{{ barang.nama_barang }}">
+
+                {% else %}
+
+                    <div class="image-placeholder">
+
+                        <i class="bi bi-box-seam"></i>
+
+                        <span>
+                            Gambar barang belum tersedia
+                        </span>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Informasi -->
+            <div class="info-list">
+
+                <div>
+                    <span>Kode</span>
+                    <b>{{ barang.kode_barang }}</b>
+                </div>
+
+                <div>
+                    <span>Barcode</span>
+                    <b>{{ barang.barcode }}</b>
+                </div>
+
+                <div>
+                    <span>Model</span>
+                    <b>{{ barang.model|default:'-' }}</b>
+                </div>
+
+                <div>
+                    <span>Status</span>
+
+                    <b>
+                        {% if barang.status %}
+                            <span class="badge-status success">
+                                Aktif
+                            </span>
+                        {% else %}
+                            <span class="badge-status muted">
+                                Nonaktif
+                            </span>
+                        {% endif %}
+                    </b>
+                </div>
+
+            </div>
+
+
+            <!-- Deskripsi -->
+            {% if barang.deskripsi %}
+
+                <div class="note-box">
+
+                    <b>Deskripsi</b>
+
+                    <p>
+                        {{ barang.deskripsi }}
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================
+         ITEM PEMERIKSAAN
+    ====================== -->
+    <div class="col-xl-8">
+
+        <div class="panel-card">
+
+            <!-- Header -->
+            <div class="panel-head">
+
+                <div>
+
+                    <div class="eyebrow">
+                        ITEM PEMERIKSAAN
+                    </div>
+
+                    <p>
+                        Ini adalah isi summary yang akan muncul
+                        setelah petugas scan barcode.
+                    </p>
+
+                </div>
+
+
+                <a href="{% url 'item_tambah' barang.id %}"
+                   class="btn btn-hino">
+                    <i class="bi bi-plus-lg me-2"></i>
+                    Tambah Item
+                </a>
+
+            </div>
+
+
+
+            <!-- Daftar Item -->
+            {% for p in barang.parameters.all %}
+
+                <div class="inspection-config">
+
+                    <!-- Nomor -->
+                    <div class="number-box">
+                        {{ p.urutan|stringformat:'02d' }}
+                    </div>
+
+
+                    <!-- Isi -->
+                    <div class="flex-grow-1">
+
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+
+                            <b class="fs-6">
+                                {{ p.nama_parameter }}
+                            </b>
+
+                            {% if p.wajib %}
+                                <span class="badge-status warning">
+                                    Wajib
+                                </span>
+                            {% else %}
+                                <span class="badge-status muted">
+                                    Opsional
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+
+                        <p class="mb-1 text-muted">
+                            {{ p.instruksi|default:'Petunjuk belum diisi.' }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- Action -->
+                    <div class="text-end">
+
+                        <!-- Edit -->
+                        <a href="{% url 'item_edit' barang.id p.id %}"
+                           class="btn btn-sm btn-light border">
+                            Edit
+                        </a>
+
+
+                        <!-- Delete -->
+                        <form method="post"
+                              action="{% url 'item_delete' p.id %}"
+                              class="d-inline">
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="btn btn-sm btn-outline-danger"
+                                onclick="return confirm('Hapus item pemeriksaan ini?')">
+
+                                Hapus
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <!-- Empty State -->
+                <div class="empty-state compact">
+
+                    <i class="bi bi-clipboard-x"></i>
+
+                    <h4>
+                        Belum ada item pemeriksaan
+                    </h4>
+
+                    <p>
+                        Tambahkan item agar barang dapat
+                        diinspeksi petugas.
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+```

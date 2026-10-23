@@ -1,0 +1,514 @@
+{% extends "server/layout.html" %}
+
+{% block title %}
+System Reports - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<div class="eyebrow">
+    HMMI / REPORTS
+</div>
+
+<h1>
+    System Reports
+</h1>
+
+<p class="page-description">
+    Ringkasan dan histori inspeksi seluruh sistem.
+</p>
+
+
+<!-- =====================================================
+     FILTER
+===================================================== -->
+
+<div class="content-card">
+
+    <h2>
+        Filter Laporan
+    </h2>
+
+    <form
+        method="GET"
+        action=""
+    >
+
+        <div
+            style="
+                display:grid;
+                grid-template-columns:
+                    repeat(4, minmax(0, 1fr));
+                gap:16px;
+                align-items:end;
+            "
+        >
+
+            <!-- TANGGAL MULAI -->
+
+            <div>
+
+                <label
+                    for="tanggal_mulai"
+                >
+                    Tanggal Mulai
+                </label>
+
+                <input
+                    type="date"
+                    id="tanggal_mulai"
+                    name="tanggal_mulai"
+                    value="{{ tanggal_mulai }}"
+                    style="
+                        width:100%;
+                        padding:10px;
+                        border:1px solid #d9dde3;
+                        border-radius:8px;
+                    "
+                >
+
+            </div>
+
+
+            <!-- TANGGAL SELESAI -->
+
+            <div>
+
+                <label
+                    for="tanggal_selesai"
+                >
+                    Tanggal Selesai
+                </label>
+
+                <input
+                    type="date"
+                    id="tanggal_selesai"
+                    name="tanggal_selesai"
+                    value="{{ tanggal_selesai }}"
+                    style="
+                        width:100%;
+                        padding:10px;
+                        border:1px solid #d9dde3;
+                        border-radius:8px;
+                    "
+                >
+
+            </div>
+
+
+            <!-- HASIL -->
+
+            <div>
+
+                <label
+                    for="status_hasil"
+                >
+                    Hasil
+                </label>
+
+                <select
+                    id="status_hasil"
+                    name="status_hasil"
+                    style="
+                        width:100%;
+                        padding:10px;
+                        border:1px solid #d9dde3;
+                        border-radius:8px;
+                    "
+                >
+
+                    <option value="">
+                        Semua Hasil
+                    </option>
+
+                    <option
+                        value="OK"
+                        {% if status_hasil == "OK" %}
+                            selected
+                        {% endif %}
+                    >
+                        OK
+                    </option>
+
+                    <option
+                        value="NG"
+                        {% if status_hasil == "NG" %}
+                            selected
+                        {% endif %}
+                    >
+                        NG
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- APPROVAL -->
+
+            <div>
+
+                <label
+                    for="status_approval"
+                >
+                    Approval
+                </label>
+
+                <select
+                    id="status_approval"
+                    name="status_approval"
+                    style="
+                        width:100%;
+                        padding:10px;
+                        border:1px solid #d9dde3;
+                        border-radius:8px;
+                    "
+                >
+
+                    <option value="">
+                        Semua Approval
+                    </option>
+
+                    <option
+                        value="PENDING"
+                        {% if status_approval == "PENDING" %}
+                            selected
+                        {% endif %}
+                    >
+                        Pending
+                    </option>
+
+                    <option
+                        value="APPROVED"
+                        {% if status_approval == "APPROVED" %}
+                            selected
+                        {% endif %}
+                    >
+                        Approved
+                    </option>
+
+                    <option
+                        value="REJECTED"
+                        {% if status_approval == "REJECTED" %}
+                            selected
+                        {% endif %}
+                    >
+                        Rejected
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- BUTTON -->
+
+        <div
+            style="
+                margin-top:18px;
+                display:flex;
+                gap:10px;
+            "
+        >
+
+            <button
+                type="submit"
+                style="
+                    padding:10px 20px;
+                    border:none;
+                    border-radius:8px;
+                    cursor:pointer;
+                "
+            >
+                Filter
+            </button>
+
+
+            <a
+                href="{% url 'reports' %}"
+                style="
+                    padding:10px 20px;
+                    border:1px solid #d9dde3;
+                    border-radius:8px;
+                    text-decoration:none;
+                "
+            >
+                Reset
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- =====================================================
+     STATISTICS
+===================================================== -->
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            TOTAL INSPEKSI
+        </div>
+
+        <div class="stat-value">
+            {{ total }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            OK
+        </div>
+
+        <div class="stat-value status-online">
+            {{ ok }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            NG
+        </div>
+
+        <div class="stat-value status-offline">
+            {{ ng }}
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            APPROVED
+        </div>
+
+        <div class="stat-value">
+            {{ approved }}
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     APPROVAL SUMMARY
+===================================================== -->
+
+<div class="content-card">
+
+    <h2>
+        Approval Summary
+    </h2>
+
+    <table>
+
+        <tr>
+            <td>
+                Pending Approval
+            </td>
+
+            <td>
+                <strong>
+                    {{ pending }}
+                </strong>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td>
+                Approved
+            </td>
+
+            <td>
+                <strong class="status-online">
+                    {{ approved }}
+                </strong>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td>
+                Rejected
+            </td>
+
+            <td>
+                <strong class="status-offline">
+                    {{ rejected }}
+                </strong>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+
+
+<!-- =====================================================
+     TABLE DATA LAPORAN
+===================================================== -->
+
+<div class="content-card">
+
+    <div
+        style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:15px;
+        "
+    >
+
+        <h2>
+            Data Laporan
+        </h2>
+
+        <span>
+            {{ total }} data
+        </span>
+
+    </div>
+
+
+    <div
+        style="
+            overflow-x:auto;
+        "
+    >
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        No
+                    </th>
+
+                    <th>
+                        Nomor Laporan
+                    </th>
+
+                    <th>
+                        Tanggal Inspeksi
+                    </th>
+
+                    <th>
+                        Barang
+                    </th>
+
+                    <th>
+                        Petugas
+                    </th>
+
+                    <th>
+                        Hasil
+                    </th>
+
+                    <th>
+                        Approval
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for laporan in reports %}
+
+                <tr>
+
+                    <td>
+                        {{ forloop.counter }}
+                    </td>
+
+                    <td>
+                        {{ laporan.nomor_laporan }}
+                    </td>
+
+                    <td>
+                        {{ laporan.tanggal_inspeksi|date:"d/m/Y H:i" }}
+                    </td>
+
+                    <td>
+                        {{ laporan.barang.nama_barang }}
+                    </td>
+
+                    <td>
+                        {{ laporan.user.username }}
+                    </td>
+
+                    <td>
+
+                        {% if laporan.status_hasil == "OK" %}
+
+                            <span class="status-online">
+                                OK
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-offline">
+                                NG
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {{ laporan.status_approval }}
+
+                    </td>
+
+                </tr>
+
+
+                {% empty %}
+
+                <tr>
+
+                    <td
+                        colspan="7"
+                        style="
+                            text-align:center;
+                            padding:30px;
+                        "
+                    >
+                        Tidak ada laporan
+                        pada filter yang dipilih.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

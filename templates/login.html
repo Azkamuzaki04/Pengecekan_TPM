@@ -1,0 +1,1008 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <title>Login - CHECKSHEET</title>
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f4f6f9;
+
+            color: #132238;
+
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+
+        /* =====================================================
+           MAIN LOGIN CONTAINER
+        ===================================================== */
+
+        .login-container {
+            width: 100%;
+            max-width: 1040px;
+            height: 680px;
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 56% 44%;
+            box-shadow:
+                0 22px 60px rgba(18, 35, 56, 0.12);
+            border: 1px solid #e5e9ef;
+        }
+
+
+        /* =====================================================
+           LEFT SIDE
+        ===================================================== */
+
+        .login-left {
+            position: relative;
+            background:
+                linear-gradient(
+                    145deg,
+                    #172c44 0%,
+                    #102238 60%,
+                    #0c1c30 100%
+                );
+            color: white;
+            padding: 52px 62px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        /* Decorative circle */
+
+        .login-left::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 430px;
+            height: 430px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            border-radius: 50%;
+
+            top: -210px;
+            right: -210px;
+        }
+
+
+        .login-left::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 280px;
+            height: 280px;
+
+            border-radius: 50%;
+
+            background: rgba(223,16,25,0.08);
+
+            bottom: -150px;
+            right: -80px;
+        }
+
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .brand {
+
+            position: relative;
+
+            z-index: 2;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+        }
+
+
+        .brand-logo {
+
+            width: 72px;
+            height: 72px;
+            flex: 0 0 72px;
+
+            object-fit: contain;
+
+            background: white;
+
+            border-radius: 9px;
+
+            padding: 7px;
+        }
+
+
+        .brand-name {
+
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            line-height: 1.25;
+
+            font-weight: 700;
+
+            letter-spacing: -0.5px;
+        }
+
+
+        .brand-subtitle {
+
+            margin-top: 5px;
+
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+
+            color: #a9bfd7;
+        }
+
+
+        /* =====================================================
+           COMPANY NAME
+        ===================================================== */
+
+        .company-name {
+
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 105px;
+
+            color: #ed1c24;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           TITLE
+        ===================================================== */
+
+        .login-title {
+            position: relative;
+            z-index: 2;
+            margin-top: 68px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+
+        .login-title .normal {
+            display: block;
+            font-family: 'Poppins', sans-serif;
+            font-size: 36px;
+            line-height: 1.15;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: #ffffff;
+        }
+
+
+        .login-title .bold {
+            display: block;
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            line-height: 1.25;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+
+        .login-description {
+            position: relative;
+            z-index: 2;
+            margin-top: 22px;
+            max-width: 450px;
+            color: #bdd0e4;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12.5px;
+            font-weight: 400;
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           FEATURES
+        ===================================================== */
+
+        .features {
+
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 42px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 20px;
+        }
+
+
+        .feature {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 16px;
+        }
+
+
+        .feature-icon {
+
+            width: 48px;
+            height: 48px;
+
+            flex: 0 0 48px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            border: 1px solid rgba(237,28,36,0.45);
+
+            background: rgba(237,28,36,0.10);
+
+            color: #ff3840;
+
+            font-size: 20px;
+
+            font-weight: bold;
+        }
+
+
+        .feature-text strong {
+
+            display: block;
+
+            font-size: 14px;
+
+            color: #ffffff;
+
+            margin-bottom: 4px;
+        }
+
+
+        .feature-text span {
+
+            display: block;
+
+            font-size: 12px;
+
+            color: #9eb5cc;
+        }
+
+
+        /* =====================================================
+           HMMI FOOTER
+        ===================================================== */
+
+        .hmmi {
+
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: auto;
+
+            padding-top: 35px;
+        }
+
+
+        .hmmi-line {
+
+            width: 62px;
+
+            height: 3px;
+
+            background: #ed1c24;
+
+            margin-bottom: 10px;
+        }
+
+
+        .hmmi strong {
+
+            display: block;
+
+            font-size: 16px;
+
+            color: #ffffff;
+        }
+
+
+        .hmmi span {
+
+            display: block;
+
+            margin-top: 4px;
+
+            font-size: 11px;
+
+            color: #91a8c0;
+        }
+
+
+        /* =====================================================
+           RIGHT SIDE
+        ===================================================== */
+
+        .login-right {
+            padding: 70px 62px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+
+        .right-eyebrow {
+
+            color: #ed1c24;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            margin-bottom: 17px;
+        }
+
+
+        .welcome-title {
+
+            font-size: 38px;
+
+            line-height: 1.15;
+
+            font-weight: 700;
+
+            color: #12243a;
+
+            margin-bottom: 10px;
+        }
+
+
+        .welcome-description {
+
+            color: #78879a;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            margin-bottom: 40px;
+        }
+
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-group {
+
+            margin-bottom: 22px;
+        }
+
+
+        .form-label {
+
+            display: block;
+
+            margin-bottom: 9px;
+
+            color: #17283c;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .input-wrapper {
+
+            position: relative;
+        }
+
+
+        .input-icon {
+
+            position: absolute;
+
+            left: 17px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #8291a3;
+
+            font-size: 16px;
+
+            pointer-events: none;
+        }
+
+
+        .login-input {
+
+            width: 100%;
+
+            height: 54px;
+
+            border: 1px solid #dce3eb;
+
+            border-radius: 10px;
+
+            background: #f8fafc;
+
+            padding: 0 18px 0 48px;
+
+            color: #17283c;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition: all 0.2s ease;
+        }
+
+
+        .login-input:focus {
+
+            background: #ffffff;
+
+            border-color: #ed1c24;
+
+            box-shadow:
+                0 0 0 3px rgba(237,28,36,0.08);
+        }
+
+
+        /* =====================================================
+           BUTTON
+        ===================================================== */
+
+        .login-button {
+
+            width: 100%;
+
+            height: 55px;
+
+            margin-top: 10px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #e50914;
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            transition: all 0.2s ease;
+        }
+
+
+        .login-button:hover {
+
+            background: #c90811;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 20px rgba(229,9,20,0.18);
+        }
+
+
+        .login-button span {
+
+            font-size: 18px;
+
+            line-height: 1;
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        .login-alert {
+
+            background: #fff1f2;
+
+            border: 1px solid #fecdd3;
+
+            color: #c1121f;
+
+            border-radius: 9px;
+
+            padding: 11px 14px;
+
+            margin-bottom: 20px;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           FOOTER RIGHT
+        ===================================================== */
+
+        .login-footer {
+
+            margin-top: 38px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #edf0f3;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            color: #9aa5b2;
+
+            font-size: 10px;
+        }
+
+
+        .footer-check {
+
+            width: 24px;
+            height: 24px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #f3f5f7;
+
+            border-radius: 7px;
+
+            color: #7f8c9b;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 950px) {
+
+            body {
+                padding: 20px;
+            }
+
+            .login-container {
+
+                grid-template-columns: 1fr;
+
+                max-width: 650px;
+                height: auto;
+            }
+
+            .login-left {
+
+                padding: 45px;
+            }
+
+            .company-name {
+
+                margin-top: 65px;
+            }
+
+            .login-right {
+
+                padding: 55px 45px;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .login-container {
+                border-radius: 16px;
+            }
+
+            .login-left {
+                padding: 35px 25px;
+            }
+
+            .brand-logo {
+                width: 55px;
+                height: 55px;
+            }
+
+            .brand-name {
+                font-size: 21px;
+            }
+
+            .company-name {
+                margin-top: 55px;
+                font-size: 10px;
+            }
+
+            .login-title .normal {
+                font-size: 38px;
+            }
+
+            .login-title .bold {
+                font-size: 45px;
+            }
+
+            .login-description {
+                font-size: 13px;
+            }
+
+            .login-right {
+                padding: 40px 25px;
+            }
+
+            .welcome-title {
+                font-size: 30px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+    <!-- =====================================================
+         LEFT
+    ====================================================== -->
+
+    <section class="login-left">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <img
+                src="{% static 'img/logo-hino.jpg' %}"
+                alt="HINO"
+                class="brand-logo"
+            >
+
+            <div>
+
+                <div class="brand-name">
+                    HINO MOTORS MANUFACTURING INDONESIA
+                </div>
+
+                <div class="brand-subtitle">
+                    Welding 
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <div class="login-title">
+
+            <span class="normal">
+                Digitalisasi CheckSheet
+            </span>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <p class="login-description">
+
+            Sistem pemeriksaan welding untuk membantu proses inspeksi,
+            pencatatan, dan monitoring hasil pemeriksaan secara terstruktur.
+
+        </p>
+
+
+        <!-- FEATURES -->
+
+        <div class="features">
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ▣
+                </div>
+
+                <div class="feature-text">
+
+                    <strong>
+                        Scan Barcode
+                    </strong>
+
+                    <span>
+                        Identifikasi item welding
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ✓
+                </div>
+
+                <div class="feature-text">
+
+                    <strong>
+                        Inspection
+                    </strong>
+
+                    <span>
+                        Pemeriksaan checksheet
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ◇
+                </div>
+
+                <div class="feature-text">
+
+                    <strong>
+                        Approval
+                    </strong>
+
+                    <span>
+                        Validasi hasil inspeksi
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- HMMI -->
+
+        <div class="hmmi">
+
+            <div class="hmmi-line"></div>
+
+            <strong>
+                HMMI
+            </strong>
+
+            <span>
+                Hino Motors Manufacturing Indonesia
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         RIGHT
+    ====================================================== -->
+
+    <section class="login-right">
+
+
+        <div class="right-eyebrow">
+            INTERNAL SYSTEM
+        </div>
+
+
+        <h1 class="welcome-title">
+            Selamat Datang
+        </h1>
+
+
+        <p class="welcome-description">
+            Silakan masuk untuk melanjutkan ke sistem CHECKSHEET.
+        </p>
+
+
+        <!-- ALERT -->
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="login-alert">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+
+        <!-- FORM -->
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            <!-- USERNAME -->
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Username
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        👤
+                    </span>
+
+                    <input
+                        type="text"
+                        name="username"
+                        class="login-input"
+                        placeholder="Masukkan username"
+                        autocomplete="username"
+                        required
+                        autofocus
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        🔒
+                    </span>
+
+                    <input
+                        type="password"
+                        name="password"
+                        class="login-input"
+                        placeholder="Masukkan password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+
+                <span>
+                    Masuk 
+                </span>
+
+            </button>
+
+
+        </form>
+
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+
+</body>
+</html>

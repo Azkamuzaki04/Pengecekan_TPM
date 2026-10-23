@@ -1,0 +1,626 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ barang|yesno:'Edit,Tambah' }} Barang - CHECKSHEET
+{% endblock %}
+
+
+{% block content %}
+
+<style>
+    .equipment-layout {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) 360px !important;
+        gap: 24px !important;
+        width: 100% !important;
+        align-items: start !important;
+    }
+
+    .equipment-identity {
+        min-width: 0;
+    }
+
+    .equipment-image {
+        width: 360px;
+        min-width: 360px;
+    }
+
+    .image-card {
+        width: 100%;
+    }
+
+    .image-upload-box {
+        width: 100%;
+        height: 250px;
+
+        border: 1px dashed #cfd6dd;
+        border-radius: 12px;
+
+        background: #f8f9fa;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        overflow: hidden;
+    }
+
+    .image-upload-box img {
+        width: 100%;
+        height: 100%;
+
+        object-fit: contain;
+
+        background: #f8f9fa;
+    }
+
+    .image-placeholder {
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+
+        color: #8b98a5;
+    }
+
+    .image-placeholder i {
+        font-size: 48px;
+        margin-bottom: 12px;
+    }
+
+    .image-placeholder span {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .image-placeholder small {
+        margin-top: 4px;
+        font-size: 12px;
+        color: #a0aab5;
+    }
+
+
+    /* =========================================
+    TABLET / LAYAR KECIL
+    ========================================= */
+
+    @media (max-width: 1050px) {
+
+        .equipment-layout {
+            grid-template-columns: minmax(0, 1fr) 300px !important;
+        }
+
+        .equipment-image {
+            width: 300px;
+            min-width: 300px;
+        }
+
+    }
+
+
+    /* =========================================
+    HP
+    ========================================= */
+
+    @media (max-width: 800px) {
+
+        .equipment-layout {
+            grid-template-columns: 1fr !important;
+        }
+
+        .equipment-image {
+            width: 100%;
+            min-width: 0;
+        }
+
+    }
+
+    </style>
+    </style>
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+<div class="page-heading">
+
+    <div>
+
+        <div class="eyebrow">
+            MASTER EQUIPMENT
+        </div>
+
+        <h1>
+            {% if barang %}
+                Edit Barang
+            {% else %}
+                Add Equipment
+            {% endif %}
+        </h1>
+
+        <p>
+            Data ini menjadi identitas yang ditemukan saat barcode discan.
+        </p>
+
+    </div>
+
+
+    <a
+        href="{% if barang %}{% url 'master_barang_detail' barang.id %}{% else %}{% url 'master_barang' %}{% endif %}"
+        class="btn btn-light border"
+    >
+        Kembali
+    </a>
+
+</div>
+
+
+<!-- =========================
+     FORM MASTER BARANG
+========================= -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="equipment-layout">
+
+        <!-- =====================================================
+             KIRI — IDENTITAS BARANG
+        ====================================================== -->
+        <div class="equipment-identity">
+
+            <div class="panel-card">
+
+                <div class="form-section-title">
+                    Identitas Barang
+                </div>
+
+                <div class="row g-3">
+
+                    <!-- KODE BARANG -->
+                    <div class="col-md-6">
+                        <label>
+                            Kode Barang *
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="kode_barang"
+                            required
+                            value="{{ barang.kode_barang|default:'' }}"
+                            placeholder="Masukkan kode barang"
+                        >
+                    </div>
+
+
+                    <!-- BARCODE -->
+                    <div class="col-md-6">
+                        <label>
+                            Barcode *
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="barcode"
+                            required
+                            value="{{ barang.barcode|default:'' }}"
+                            placeholder="Masukkan barcode"
+                        >
+                    </div>
+
+
+                    <!-- NAMA BARANG -->
+                    <div class="col-md-8">
+                        <label>
+                            Nama Barang *
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="nama_barang"
+                            required
+                            value="{{ barang.nama_barang|default:'' }}"
+                            placeholder="Masukkan nama equipment"
+                        >
+                    </div>
+
+
+                    <!-- MODEL -->
+                    <div class="col-md-4">
+                        <label>
+                            Model / Tipe
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="model"
+                            value="{{ barang.model|default:'' }}"
+                            placeholder="Model / tipe"
+                        >
+                    </div>
+
+
+                    <!-- JENIS EQUIPMENT -->
+                    <div class="col-12">
+                        <label>
+                            Jenis Equipment *
+                        </label>
+
+                        <select
+                            class="form-select"
+                            name="jenis_equipment"
+                            id="jenisEquipment"
+                            required
+                        >
+                            <option value="">
+                                -- Pilih Jenis Equipment --
+                            </option>
+
+                            <option
+                                value="TRAFO_GUN"
+                                {% if barang.jenis_equipment == "TRAFO_GUN" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Trafo &amp; Gun
+                            </option>
+
+                            <option
+                                value="ELECTRICAL_AIR_HOIST"
+                                {% if barang.jenis_equipment == "ELECTRICAL_AIR_HOIST" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Electrical &amp; Air Hoist
+                            </option>
+
+                            <option
+                                value="HANGER"
+                                {% if barang.jenis_equipment == "HANGER" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Hanger
+                            </option>
+
+                            <option
+                                value="BALANCER"
+                                {% if barang.jenis_equipment == "BALANCER" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Balancer
+                            </option>
+
+                            <option
+                                value="TROLLEY"
+                                {% if barang.jenis_equipment == "TROLLEY" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Trolley
+                            </option>
+
+                            <option
+                                value="KBK_REL"
+                                {% if barang.jenis_equipment == "KBK_REL" %}
+                                    selected
+                                {% endif %}
+                            >
+                                KBK Rel
+                            </option>
+
+                        </select>
+                    </div>
+
+
+                    <!-- SUB JENIS -->
+                    <div
+                        class="col-12"
+                        id="subJenisWrapper"
+                        style="display:none;"
+                    >
+
+                        <label>
+                            Sub Jenis Equipment *
+                        </label>
+
+                        <select
+                            class="form-select"
+                            name="sub_jenis_equipment"
+                            id="subJenisEquipment"
+                        >
+
+                            <option value="">
+                                -- Pilih Sub Jenis Equipment --
+                            </option>
+
+                            <option
+                                value="TRAFO"
+                                {% if barang.sub_jenis_equipment == "TRAFO" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Trafo
+                            </option>
+
+                            <option
+                                value="GUN"
+                                {% if barang.sub_jenis_equipment == "GUN" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Gun
+                            </option>
+
+                            <option
+                                value="ELECTRICAL_HOIST"
+                                {% if barang.sub_jenis_equipment == "ELECTRICAL_HOIST" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Electrical Hoist
+                            </option>
+
+                            <option
+                                value="AIR_HOIST"
+                                {% if barang.sub_jenis_equipment == "AIR_HOIST" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Air Hoist
+                            </option>
+
+                        </select>
+
+                        <small
+                            style="
+                                display:block;
+                                margin-top:7px;
+                                color:#7b8794;
+                                font-size:12px;
+                            "
+                        >
+                            Pilih sub kategori equipment yang sesuai.
+                        </small>
+
+                    </div>
+
+
+                    <!-- DESKRIPSI -->
+                    <div class="col-12">
+
+                        <label>
+                            Deskripsi
+                        </label>
+
+                        <textarea
+                            class="form-control"
+                            name="deskripsi"
+                            rows="4"
+                            placeholder="Masukkan deskripsi equipment"
+                        >{{ barang.deskripsi|default:'' }}</textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             KANAN — GAMBAR BARANG
+        ====================================================== -->
+        <div class="equipment-image">
+
+            <div class="panel-card image-card">
+
+                <div class="form-section-title">
+                    Gambar Barang
+                </div>
+
+
+                <!-- PREVIEW -->
+                <div class="image-upload-box">
+
+                    {% if barang.gambar %}
+
+                        <img
+                            id="imagePreview"
+                            src="{{ barang.gambar.url }}"
+                            alt="{{ barang.nama_barang }}"
+                        >
+
+                    {% else %}
+
+                        <div
+                            class="image-placeholder"
+                            id="imagePlaceholder"
+                        >
+                            <i class="bi bi-image"></i>
+
+                            <span>
+                                Belum ada gambar
+                            </span>
+
+                            <small>
+                                Upload foto equipment
+                            </small>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- FILE -->
+                <div class="mt-3">
+
+                    <label>
+                        Upload Gambar
+                    </label>
+
+                    <input
+                        class="form-control"
+                        type="file"
+                        name="gambar"
+                        id="gambarInput"
+                        accept="image/*"
+                    >
+
+                </div>
+
+
+                <!-- STATUS -->
+                <div class="form-check form-switch mt-4">
+
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="status"
+                        {% if not barang or barang.status %}
+                            checked
+                        {% endif %}
+                    >
+
+                    <label class="form-check-label">
+                        Barang aktif
+                    </label>
+
+                </div>
+
+
+                <!-- SIMPAN -->
+                <button
+                    type="submit"
+                    class="btn btn-hino w-100 mt-4"
+                >
+                    <i class="bi bi-save me-2"></i>
+                    Simpan Barang
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const jenisSelect = document.querySelector(
+        'select[name="jenis_equipment"]'
+    );
+
+    const subWrapper = document.getElementById(
+        "subJenisWrapper"
+    );
+
+    const subSelect = document.getElementById(
+        "subJenisEquipment"
+    );
+
+    if (!jenisSelect || !subWrapper || !subSelect) {
+        return;
+    }
+
+    function updateSubJenis() {
+
+        const jenis = jenisSelect.value;
+
+        const currentValue = subSelect.value;
+
+        // Sembunyikan terlebih dahulu
+        subWrapper.style.display = "none";
+
+        // Nonaktifkan jika tidak diperlukan
+        subSelect.disabled = true;
+        subSelect.required = false;
+
+        // Simpan pilihan sementara
+        let allowedValues = [];
+
+        // =========================
+        // TRAFO & GUN
+        // =========================
+        if (jenis === "TRAFO_GUN") {
+
+            subWrapper.style.display = "block";
+
+            subSelect.disabled = false;
+            subSelect.required = true;
+
+            allowedValues = [
+                "TRAFO",
+                "GUN"
+            ];
+        }
+
+        // =========================
+        // ELECTRICAL & AIR HOIST
+        // =========================
+        else if (jenis === "ELECTRICAL_AIR_HOIST") {
+
+            subWrapper.style.display = "block";
+
+            subSelect.disabled = false;
+            subSelect.required = true;
+
+            allowedValues = [
+                "ELECTRICAL_HOIST",
+                "AIR_HOIST"
+            ];
+        }
+
+        // =========================
+        // FILTER OPTION
+        // =========================
+        Array.from(
+            subSelect.options
+        ).forEach(function (option) {
+
+            if (option.value === "") {
+                option.hidden = false;
+                return;
+            }
+
+            option.hidden =
+                !allowedValues.includes(
+                    option.value
+                );
+        });
+
+        // =========================
+        // VALIDASI NILAI
+        // =========================
+        if (
+            !allowedValues.includes(
+                currentValue
+            )
+        ) {
+            subSelect.value = "";
+        }
+
+    }
+
+    jenisSelect.addEventListener(
+        "change",
+        updateSubJenis
+    );
+
+    // Jalankan saat halaman pertama dibuka
+    // penting untuk halaman EDIT
+    updateSubJenis();
+
+});
+</script>
+
+{% endblock %}

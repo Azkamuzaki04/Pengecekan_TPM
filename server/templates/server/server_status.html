@@ -1,0 +1,138 @@
+{% extends "server/layout.html" %}
+
+{% block title %}
+Server Status - CHECKSHEET
+{% endblock %}
+
+{% block content %}
+
+<div class="eyebrow">
+    HMMI / SYSTEM
+</div>
+
+<h1>
+    Server Status
+</h1>
+
+<p class="page-description">
+    Kondisi aplikasi, database, dan environment CHECKSHEET.
+</p>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            APPLICATION
+        </div>
+
+        <div class="stat-value status-online">
+            ONLINE
+        </div>
+
+        <div class="stat-description">
+            Django berjalan normal
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            DATABASE
+        </div>
+
+        <div class="stat-value
+            {% if db_online %}
+                status-online
+            {% else %}
+                status-offline
+            {% endif %}
+        ">
+
+            {% if db_online %}
+                ONLINE
+            {% else %}
+                OFFLINE
+            {% endif %}
+
+        </div>
+
+        <div class="stat-description">
+            Koneksi MySQL
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            DJANGO
+        </div>
+
+        <div class="stat-value">
+            {{ django_version }}
+        </div>
+
+        <div class="stat-description">
+            Framework version
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-title">
+            PYTHON
+        </div>
+
+        <div class="stat-value">
+            {{ python_version }}
+        </div>
+
+        <div class="stat-description">
+            Runtime environment
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content-card">
+
+    <h2>
+        Server Information
+    </h2>
+
+    <table>
+
+        <tr>
+            <td>Server Time</td>
+            <td>{{ server_time }}</td>
+        </tr>
+
+        <tr>
+            <td>Media Root</td>
+            <td>{{ media_root }}</td>
+        </tr>
+
+        <tr>
+            <td>Application</td>
+            <td>CHECKSHEET Welding Medium</td>
+        </tr>
+
+        <tr>
+            <td>Environment</td>
+            <td>Production / Monitoring</td>
+        </tr>
+
+    </table>
+
+</div>
+
+{% endblock %}

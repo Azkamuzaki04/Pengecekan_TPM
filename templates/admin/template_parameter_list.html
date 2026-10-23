@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Template Pemeriksaan - {{ jenis_label }}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #1f2937;
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .title-section h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .title-section p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 18px;
+            border-radius: 9px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: #c8102e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #a80d25;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        .btn-edit {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-delete {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .summary-label {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .table-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+
+        th {
+            background: #f9fafb;
+            font-size: 13px;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .number {
+            width: 70px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .parameter-name {
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .small-text {
+            margin-top: 4px;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-okng {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-number {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .badge-text {
+            background: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .badge-select {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .actions-cell {
+            white-space: nowrap;
+        }
+
+        .actions-cell .btn {
+            margin-right: 5px;
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty strong {
+            display: block;
+            color: #374151;
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .alert {
+            padding: 13px 16px;
+            border-radius: 9px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 700px) {
+            .page {
+                padding: 18px;
+            }
+
+            .header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+
+        <div class="title-section">
+            <h1>Template Pemeriksaan</h1>
+            <p>{{ jenis_label }}</p>
+        </div>
+
+        <div class="actions">
+
+            <a href="{% url 'master_barang' %}"
+               class="btn btn-secondary">
+                ← Kembali
+            </a>
+
+            <a href="{% url 'template_parameter_tambah' jenis=jenis %}"
+               class="btn btn-primary">
+                + Tambah Item
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- MESSAGES -->
+    {% if messages %}
+        {% for message in messages %}
+
+            <div class="alert
+                {% if message.tags == 'success' %}
+                    alert-success
+                {% else %}
+                    alert-error
+                {% endif %}
+            ">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+    {% endif %}
+
+
+    <!-- SUMMARY -->
+    <div class="summary">
+
+        <div class="summary-card">
+            <div class="summary-label">
+                Jenis Equipment
+            </div>
+
+            <div class="summary-value">
+                {{ jenis_label }}
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-label">
+                Equipment Aktif
+            </div>
+
+            <div class="summary-value">
+                {{ total_equipment }}
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- TABLE -->
+    <div class="table-card">
+
+        <div class="table-header">
+            <h2>
+                Item Pemeriksaan {{ jenis_label }}
+            </h2>
+        </div>
+
+
+        <div class="table-wrapper">
+
+            {% if template_list %}
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th class="number">No.</th>
+                        <th>Item Pemeriksaan</th>
+                        <th>Instruksi</th>
+                        <th>Standar</th>
+                        <th>Input</th>
+                        <th>Wajib</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% for item in template_list %}
+
+                    <tr>
+
+                        <td class="number">
+                            {{ item.urutan }}
+                        </td>
+
+
+                        <td>
+                            <div class="parameter-name">
+                                {{ item.nama_parameter }}
+                            </div>
+
+                            {% if item.satuan %}
+                                <div class="small-text">
+                                    Satuan: {{ item.satuan }}
+                                </div>
+                            {% endif %}
+                        </td>
+
+
+                        <td>
+                            {% if item.instruksi %}
+                                {{ item.instruksi }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+
+                        <td>
+
+                            {% if item.standar %}
+                                {{ item.standar }}
+                            {% else %}
+
+                                {% if item.nilai_min is not None %}
+                                    Min: {{ item.nilai_min }}
+                                {% endif %}
+
+                                {% if item.nilai_max is not None %}
+                                    <br>
+                                    Max: {{ item.nilai_max }}
+                                {% endif %}
+
+                                {% if item.nilai_min is None and item.nilai_max is None %}
+                                    -
+                                {% endif %}
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if item.tipe_input == "okng" %}
+
+                                <span class="badge badge-okng">
+                                    OK / NG
+                                </span>
+
+                            {% elif item.tipe_input == "number" %}
+
+                                <span class="badge badge-number">
+                                    Angka
+                                </span>
+
+                            {% elif item.tipe_input == "text" %}
+
+                                <span class="badge badge-text">
+                                    Teks
+                                </span>
+
+                            {% elif item.tipe_input == "select" %}
+
+                                <span class="badge badge-select">
+                                    Pilihan
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if item.wajib %}
+                                Ya
+                            {% else %}
+                                Tidak
+                            {% endif %}
+
+                        </td>
+
+
+                        <td class="actions-cell">
+
+                            <a href="{% url 'template_parameter_edit' jenis=jenis template_id=item.id %}"
+                               class="btn btn-edit">
+                                Edit
+                            </a>
+
+
+                            <form method="post"
+                                  action="{% url 'template_parameter_delete' jenis=jenis template_id=item.id %}"
+                                  style="display:inline;"
+                                  onsubmit="return confirm('Hapus item pemeriksaan ini?');">
+
+                                {% csrf_token %}
+
+                                <button type="submit"
+                                        class="btn btn-delete">
+                                    Hapus
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+                <div class="empty">
+
+                    <strong>
+                        Belum ada item pemeriksaan
+                    </strong>
+
+                    <div>
+                        Tambahkan item pemeriksaan untuk
+                        {{ jenis_label }}.
+                    </div>
+
+                    <br>
+
+                    <a href="{% url 'template_parameter_tambah' jenis=jenis %}"
+                       class="btn btn-primary">
+                        + Tambah Item Pertama
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
