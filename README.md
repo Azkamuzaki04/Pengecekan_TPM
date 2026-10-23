@@ -1,4 +1,4 @@
-# CHECKSIT Welding HMMI
+# CHECKSHEET Welding
 
 Sistem inspeksi welding dengan 3 role dan 2 platform utama:
 
